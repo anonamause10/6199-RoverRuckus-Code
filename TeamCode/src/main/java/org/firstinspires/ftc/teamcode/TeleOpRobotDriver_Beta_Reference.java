@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name="TeleOpRobotDriver_Mk_III")
 public class TeleOpRobotDriver_Beta_Reference extends LinearOpMode {
 
-    // Declare OpMode members. maybe this'll work alex was her
+    // Declare OpMode members. maybe this'll work ian was here
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeftDrive = null;
     private DcMotor frontRightDrive = null;
