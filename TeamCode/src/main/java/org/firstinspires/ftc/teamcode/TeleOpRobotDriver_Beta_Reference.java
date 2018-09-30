@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.util.Range;
 /**
  * Created by god on 1/1/1/1
  */
-@TeleOp(name="TeleOpRobotDriver_Mk_III")
+@TeleOp(name="TeleOpRobotDriver_Mk_REE")
 public class TeleOpRobotDriver_Beta_Reference extends LinearOpMode {
 
     // Declare OpMode members. maybe this'll work ian was here ooh lookey its a test
@@ -70,7 +70,6 @@ public class TeleOpRobotDriver_Beta_Reference extends LinearOpMode {
      */
     @Override
     public void runOpMode() {
-
         frontLeftDrive = hardwareMap.get(DcMotor.class, "fleft");
         frontRightDrive = hardwareMap.get(DcMotor.class, "fright");
         backLeftDrive = hardwareMap.get(DcMotor.class, "bleft");
@@ -83,7 +82,6 @@ public class TeleOpRobotDriver_Beta_Reference extends LinearOpMode {
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
-
 
         pJoint = hardwareMap.get(DcMotor.class, "pull");
         pJoint.setDirection(DcMotorSimple.Direction.REVERSE);
