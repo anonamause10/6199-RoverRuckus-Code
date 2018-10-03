@@ -23,10 +23,12 @@ public class MemesAreDreams extends LinearOpMode{
 
         @Override
         public void runOpMode() {
+            while (opModeIsActive()) {
                 frontLeftDrive = hardwareMap.get(DcMotor.class, "fleft");
                 frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
                 frontLeftDrive.setPower(1);
                 telemetry.addData("memes", 50);
                 telemetry.update();
+            }
         }
 }
