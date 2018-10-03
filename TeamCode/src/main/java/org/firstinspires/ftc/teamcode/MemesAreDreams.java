@@ -17,7 +17,7 @@ package org.firstinspires.ftc.teamcode;
  */
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-@TeleOp(name="TeleOpRobotDriver_Mk_JKTHISATEST")
+@TeleOp(name="TeleOpRobotDriver_Mk_TEST")
 public class MemesAreDreams extends LinearOpMode{
         private DcMotor frontLeftDrive = null;
 

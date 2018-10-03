@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.util.Range;
 /**
  * Created by god on 1/1/1/1
  */
-@TeleOp(name="TeleOpRobotDriver_Mk_REE")
+@TeleOp(name="TeleOpRobotDriver_Mk_III")
 public class TeleOpRobotDriver_Beta_Reference extends LinearOpMode {
 
     // Declare OpMode members. maybe this'll work ian was here ooh lookey its a test
