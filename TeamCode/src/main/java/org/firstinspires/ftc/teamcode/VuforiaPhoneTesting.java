@@ -170,7 +170,7 @@ public class VuforiaPhoneTesting extends OpMode
         //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
         vuforia.setDogeCVDetector(detector);
         vuforia.enableDogeCV();
-        //vuforia.showDebug();
+        vuforia.showDebug();
         vuforia.start();
 
 
