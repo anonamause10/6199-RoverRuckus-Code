@@ -1,7 +1,7 @@
 package com.disnodeteam.dogecv;
 
 /**
- * Contains global enumerated types
+ * Contains global enumerated types.
  */
 public class DogeCV {
     public enum DetectionSpeed {
