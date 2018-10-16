@@ -19,15 +19,25 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name="TeleOpRobotDriver_Mk_TEST")
 public class MemesAreDreams extends LinearOpMode{
+        private ElapsedTime runtime = new ElapsedTime();
         private DcMotor frontLeftDrive = null;
 
         @Override
         public void runOpMode() {
+            frontLeftDrive = hardwareMap.get(DcMotor.class, "fleft");
+            frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+            frontLeftDrive.setPower(0);
+
+            telemetry.addData("Robot", "Initialized");
+            telemetry.update();
+
+            waitForStart();
+
+            runtime.reset();
             while (opModeIsActive()) {
-                frontLeftDrive = hardwareMap.get(DcMotor.class, "fleft");
-                frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
                 frontLeftDrive.setPower(1);
-                telemetry.addData("memes", 50);
+                telemetry.addData("memes", frontLeftDrive.getPower());
+                telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.update();
             }
         }
