@@ -21,12 +21,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class MemesAreDreams extends LinearOpMode{
         private ElapsedTime runtime = new ElapsedTime();
         private DcMotor frontLeftDrive = null;
+        private DcMotor backLeftDrive = null;
 
         @Override
         public void runOpMode() {
             frontLeftDrive = hardwareMap.get(DcMotor.class, "fleft");
             frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
             frontLeftDrive.setPower(0);
+            backLeftDrive = hardwareMap.get(DcMotor.class, "bleft");
+            backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+            backLeftDrive.setPower(0);
 
             telemetry.addData("Robot", "Initialized");
             telemetry.update();
@@ -36,7 +40,9 @@ public class MemesAreDreams extends LinearOpMode{
             runtime.reset();
             while (opModeIsActive()) {
                 frontLeftDrive.setPower(1);
+                backLeftDrive.setPower(1);
                 telemetry.addData("memes", frontLeftDrive.getPower());
+                telemetry.addData("memess", backLeftDrive.getPower());
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.update();
             }
