@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -15,6 +16,7 @@ import com.qualcomm.robotcore.util.Range;
 /**
  * Created by god on 1/1/1/1
  */
+@Disabled
 @TeleOp(name="TeleOpRobotDriver_Mk_III")
 public class TeleOpRobotDriver_Beta_Reference extends LinearOpMode {
 
