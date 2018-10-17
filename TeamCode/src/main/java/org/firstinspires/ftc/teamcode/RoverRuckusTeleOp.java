@@ -74,7 +74,7 @@ public class RoverRuckusTeleOp extends LinearOpMode {
 
 
 
-
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
         }
     }
