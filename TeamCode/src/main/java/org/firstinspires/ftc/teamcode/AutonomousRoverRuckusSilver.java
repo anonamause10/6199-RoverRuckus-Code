@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+//haha u just got frigged
 /**
  * Created by isong on 10/17/18.
  */
@@ -17,7 +17,7 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
     private DcMotor frontRightDrive = null;
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
-    private double circumference = 4.0;
+    private double circumference = 4.0*Math.PI;
 
 
 
@@ -50,9 +50,17 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         runtime.reset();
 
         driveTo(4);
-
-
-
+        telemetry.addData("BIG REE", "eh");
+        telemetry.update();
+        driveBackTo(4);
+        telemetry.addData("BIG REE", "beh");
+        telemetry.update();
+        driveLeftTo(4);
+        telemetry.addData("BIG REE", "teh");
+        telemetry.update();
+        driveRightTo(4);
+        telemetry.addData("BIG REE", "meh");
+        telemetry.update();
 
 
 
@@ -85,6 +93,10 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightDrive.setPower(0);
+        frontLeftDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
 
     }
 
@@ -109,16 +121,21 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
-        frontRightDrive.setPower(-0.75);
-        frontLeftDrive.setPower(-0.75);
-        backLeftDrive.setPower(-0.75);
-        backRightDrive.setPower(-0.75);
+        frontRightDrive.setPower(0.75);
+        frontLeftDrive.setPower(0.75);
+        backLeftDrive.setPower(0.75);
+        backRightDrive.setPower(0.75);
         while (frontLeftDrive.isBusy() && frontRightDrive.isBusy() && backRightDrive.isBusy() && backLeftDrive.isBusy()) {
         }
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontRightDrive.setPower(0);
+        frontLeftDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
     }
     void driveLeftTo(double distance) {
         driveRightTo(-distance);
