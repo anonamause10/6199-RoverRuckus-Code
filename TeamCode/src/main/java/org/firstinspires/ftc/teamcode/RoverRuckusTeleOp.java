@@ -17,13 +17,6 @@ public class RoverRuckusTeleOp extends LinearOpMode {
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
 
-
-
-
-
-
-
-
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -35,24 +28,12 @@ public class RoverRuckusTeleOp extends LinearOpMode {
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);backRightDrive.setDirection(DcMotor.Direction.FORWARD);
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
 
-
-
-
-
-
-
-
         telemetry.addData("Robot", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
         while (opModeIsActive()) {
-
-
-
-
-
 
             //DONT TOUCH THIS
             double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
@@ -68,11 +49,6 @@ public class RoverRuckusTeleOp extends LinearOpMode {
             backRightDrive.setPower(v4*0.75);
             telemetry.addData("Motors", "front left (%.2f), front right (%.2f), back left (%.2f), back right (%.2f)", frontLeftDrive.getPower(), frontRightDrive.getPower(), backLeftDrive.getPower(), backRightDrive.getPower());
             //OK YOU GOOD NOW
-
-
-
-
-
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
