@@ -17,6 +17,7 @@ public class RoverRuckusTeleOp extends LinearOpMode {
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
 
+    private boolean intakeDown = false;
 
 
 
@@ -48,34 +49,57 @@ public class RoverRuckusTeleOp extends LinearOpMode {
         waitForStart();
         runtime.reset();
         while (opModeIsActive()) {
+            drive();
+
+            //TASKS:
+
+            //When the A button is pressed on gamepad 1
+            //Activate the intake
+            //If the intake is activated, turn off the intake
+
+            //When the B button is pressed on gamepad 1
+            //Activate the intake in REVERSE
+            //If the intake is activated, turn off the intake
+
+            //When the right bumper is pressed on gamepad 1
+            //Extend the intake
+
+            //When the left bumper is pressed on gamepad 1
+            //Retract the intake
+
+            //When the X button is pressed on gamepad 1
+            //if the intake is in the DOWN position
+                //move the intake to the UP position
+            //else
+                //move the intake to the DOWN position
 
 
 
+            //Display the current power of the intake
+            //Display what position the intake is in (UP or DOWN)
 
 
-
-            //DONT TOUCH THIS
-            double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-            double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
-            double rightX = gamepad1.right_stick_x;
-            double v1 = r * Math.cos(robotAngle) + rightX;
-            double v2 = r * Math.sin(robotAngle) - rightX;
-            double v3 = r * Math.sin(robotAngle) + rightX;
-            double v4 = r * Math.cos(robotAngle) - rightX;
-            frontLeftDrive.setPower(v1*0.75);
-            frontRightDrive.setPower(v2*0.75);
-            backLeftDrive.setPower(v3*0.75);
-            backRightDrive.setPower(v4*0.75);
-            telemetry.addData("Motors", "front left (%.2f), front right (%.2f), back left (%.2f), back right (%.2f)", frontLeftDrive.getPower(), frontRightDrive.getPower(), backLeftDrive.getPower(), backRightDrive.getPower());
-            //OK YOU GOOD NOW
-
-
-
-
-
-
+            telemetry.addData("Wheel Power", "front left (%.2f), front right (%.2f), " +
+                    "back left (%.2f), back right (%.2f)", frontLeftDrive.getPower(), frontRightDrive.getPower(),
+                    backLeftDrive.getPower(), backRightDrive.getPower());
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
         }
+    }
+
+    private void drive(){
+        //DONT TOUCH THIS
+        double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
+        double rightX = gamepad1.right_stick_x;
+        double v1 = r * Math.cos(robotAngle) + rightX;
+        double v2 = r * Math.sin(robotAngle) - rightX;
+        double v3 = r * Math.sin(robotAngle) + rightX;
+        double v4 = r * Math.cos(robotAngle) - rightX;
+        frontLeftDrive.setPower(v1*0.75);
+        frontRightDrive.setPower(v2*0.75);
+        backLeftDrive.setPower(v3*0.75);
+        backRightDrive.setPower(v4*0.75);
+        //OK YOU GOOD NOW
     }
 }

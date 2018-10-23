@@ -17,9 +17,8 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
     private DcMotor frontRightDrive = null;
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
-    private double circumference = 4.0*Math.PI;
-
-
+    private double ratio = 1;
+    private double circumference = 4.0*Math.PI*ratio;
 
 
 
@@ -51,15 +50,22 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
 
         driveTo(4);
         telemetry.addData("BIG REE", "eh");
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
+        sleep(2000);
         driveBackTo(4);
         telemetry.addData("BIG REE", "beh");
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
+        sleep(2000);
         driveLeftTo(4);
         telemetry.addData("BIG REE", "teh");
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
+        sleep(2000);
         driveRightTo(4);
         telemetry.addData("BIG REE", "meh");
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
 
 
