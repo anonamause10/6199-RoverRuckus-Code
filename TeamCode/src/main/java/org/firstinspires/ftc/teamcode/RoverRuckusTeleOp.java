@@ -9,8 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Created by isong on 10/17/18.
  */
 @TeleOp(name="TeleOpROVERRUCKUS")
-public class RoverRuckusTeleOp extends LinearOpMode
-{
+public class RoverRuckusTeleOp extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeftDrive = null;
@@ -30,8 +29,7 @@ public class RoverRuckusTeleOp extends LinearOpMode
      * Code to run ONCE when the driver hits INIT
      */
     @Override
-    public void runOpMode() throws InterruptedException
-    {
+    public void runOpMode() throws InterruptedException {
         frontLeftDrive = hardwareMap.get(DcMotor.class, "fleft");frontRightDrive = hardwareMap.get(DcMotor.class, "fright");
         backLeftDrive = hardwareMap.get(DcMotor.class, "bleft");backRightDrive = hardwareMap.get(DcMotor.class, "bright");
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -50,51 +48,31 @@ public class RoverRuckusTeleOp extends LinearOpMode
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-        while (opModeIsActive())
-        {
+        while (opModeIsActive()) {
             drive();
 
             //TASKS:
-            if (gamepad1.a == true) {
-                /*if (!intake on)
-                  {
-                       intake on;
-                  }
-                  else
-                  {
-                        intake off;
-                  }*/
 
-            }
+            //When the A button is pressed on gamepad 1
+            //Activate the intake
+            //If the intake is activated, turn off the intake
 
-            if (gamepad1.b == true) {
-                /*if (!intake on)
-                  {
-                       intake reverse on;
-                  }
-                  else
-                  {
-                        intake off;
-                  }*/
-            }
+            //When the B button is pressed on gamepad 1
+            //Activate the intake in REVERSE
+            //If the intake is activated, turn off the intake
 
-            if (gamepad1.right_bumper == true) {
-                //extend intake
-            }
+            //When the right bumper is pressed on gamepad 1
+            //Extend the intake
 
-            if (gamepad1.left_bumper == true) {
-                //retract intake
-            }
+            //When the left bumper is pressed on gamepad 1
+            //Retract the intake
 
-            if (gamepad1.x == true) {
-                if (intakeDown == true) {
-                    intakeDown = false
-                }
-                else {
-                    intakeDown = true;
-                }
-            }
-        }
+            //When the X button is pressed on gamepad 1
+            //if the intake is in the DOWN position
+                //move the intake to the UP position
+            //else
+                //move the intake to the DOWN position
+
 
 
             //Display the current power of the intake
@@ -109,16 +87,15 @@ public class RoverRuckusTeleOp extends LinearOpMode
         }
     }
 
-    private void drive()
-    {
+    private void drive(){
         //DONT TOUCH THIS
         double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
         double rightX = gamepad1.right_stick_x;
-        double v1 = r * Math.cos(robotAngle) + rightX;
-        double v2 = r * Math.sin(robotAngle) - rightX;
-        double v3 = r * Math.sin(robotAngle) + rightX;
-        double v4 = r * Math.cos(robotAngle) - rightX;
+        double v1 = r * Math.cos(robotAngle) - rightX;
+        double v2 = r * Math.sin(robotAngle) + rightX;
+        double v3 = r * Math.sin(robotAngle) - rightX;
+        double v4 = r * Math.cos(robotAngle) + rightX;
         frontLeftDrive.setPower(v1*0.75);
         frontRightDrive.setPower(v2*0.75);
         backLeftDrive.setPower(v3*0.75);
