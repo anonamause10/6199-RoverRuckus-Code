@@ -22,7 +22,7 @@ public class MemesAreDreams extends LinearOpMode{
         private ElapsedTime runtime = new ElapsedTime();
         private DcMotor frontLeftDrive = null;
         private DcMotor backLeftDrive = null;
-
+        private Servo servo = null;
         @Override
         public void runOpMode() {
             frontLeftDrive = hardwareMap.get(DcMotor.class, "fleft");
@@ -31,6 +31,7 @@ public class MemesAreDreams extends LinearOpMode{
             backLeftDrive = hardwareMap.get(DcMotor.class, "bleft");
             backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
             backLeftDrive.setPower(0);
+            servo = hardwareMap.get(Servo.class, "serv");
 
             telemetry.addData("Robot", "Initialized");
             telemetry.update();

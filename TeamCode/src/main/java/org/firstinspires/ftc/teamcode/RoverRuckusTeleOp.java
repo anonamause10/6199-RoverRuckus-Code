@@ -34,6 +34,8 @@ public class RoverRuckusTeleOp extends LinearOpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "bleft");backRightDrive = hardwareMap.get(DcMotor.class, "bright");
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
 
 
@@ -89,8 +91,7 @@ public class RoverRuckusTeleOp extends LinearOpMode {
 
     private void drive(){
         //DONT TOUCH THIS
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
         double rightX = gamepad1.right_stick_x;
@@ -98,10 +99,10 @@ public class RoverRuckusTeleOp extends LinearOpMode {
         double v2 = r * Math.sin(robotAngle) + rightX;
         double v3 = r * Math.sin(robotAngle) - rightX;
         double v4 = r * Math.cos(robotAngle) + rightX;
-        frontLeftDrive.setPower(v1*0.75);
-        frontRightDrive.setPower(v2*0.75);
-        backLeftDrive.setPower(v3*0.75);
-        backRightDrive.setPower(v4*0.75);
+        frontLeftDrive.setPower(v1*0.25);
+        frontRightDrive.setPower(v2*0.25);
+        backLeftDrive.setPower(v3*0.25);
+        backRightDrive.setPower(v4*0.25);
         //OK YOU GOOD NOW
     }
 }
