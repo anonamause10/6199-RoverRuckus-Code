@@ -89,6 +89,8 @@ public class RoverRuckusTeleOp extends LinearOpMode {
 
     private void drive(){
         //DONT TOUCH THIS
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
         double rightX = gamepad1.right_stick_x;
