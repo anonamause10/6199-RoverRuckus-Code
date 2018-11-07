@@ -97,10 +97,10 @@ public class RoverRuckusTeleOp extends LinearOpMode {
         double v2 = r * Math.sin(robotAngle) + rightX;
         double v3 = r * Math.sin(robotAngle) - rightX;
         double v4 = r * Math.cos(robotAngle) + rightX;
-        frontLeftDrive.setPower(v1*0.25);
-        frontRightDrive.setPower(v2*0.25);
-        backLeftDrive.setPower(v3*0.25);
-        backRightDrive.setPower(v4*0.25);
+        frontLeftDrive.setPower(v1*0.5);
+        frontRightDrive.setPower(v2*0.5);
+        backLeftDrive.setPower(v3*0.5);
+        backRightDrive.setPower(v4*0.5);
         //OK YOU GOOD NOW
     }
 }

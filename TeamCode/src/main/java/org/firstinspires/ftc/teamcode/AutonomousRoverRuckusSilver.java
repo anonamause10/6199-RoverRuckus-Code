@@ -17,7 +17,7 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
     private DcMotor frontRightDrive = null;
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
-    private double ratio = 1;
+    private double ratio = 1.5;
     private double circumference = 4.0*Math.PI*ratio;
 
 
@@ -53,7 +53,7 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
         sleep(2000);
-        driveBackTo(4);
+        /**driveBackTo(4);
         telemetry.addData("BIG REE", "beh");
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
@@ -67,6 +67,7 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         telemetry.addData("BIG REE", "meh");
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
+         **/
 
 
 
@@ -89,10 +90,10 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
-        frontRightDrive.setPower(0.75);
-        frontLeftDrive.setPower(0.75);
-        backLeftDrive.setPower(0.75);
-        backRightDrive.setPower(0.75);
+        frontRightDrive.setPower(0.1);
+        frontLeftDrive.setPower(0.1);
+        backLeftDrive.setPower(0.1);
+        backRightDrive.setPower(0.1);
         while (frontLeftDrive.isBusy() && frontRightDrive.isBusy() && backRightDrive.isBusy() && backLeftDrive.isBusy()) {
         }
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -127,10 +128,10 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
-        frontRightDrive.setPower(0.75);
-        frontLeftDrive.setPower(0.75);
-        backLeftDrive.setPower(0.75);
-        backRightDrive.setPower(0.75);
+        frontRightDrive.setPower(0.1);
+        frontLeftDrive.setPower(0.1);
+        backLeftDrive.setPower(0.1);
+        backRightDrive.setPower(0.1);
         while (frontLeftDrive.isBusy() && frontRightDrive.isBusy() && backRightDrive.isBusy() && backLeftDrive.isBusy()) {
         }
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
