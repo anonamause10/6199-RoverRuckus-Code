@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -18,6 +19,15 @@ public class RoverRuckusTeleOp extends LinearOpMode {
     private DcMotor backRightDrive = null;
 
     private boolean intakeDown = false;
+    private DcMotor intake = null;
+    private DcMotor pully = null;
+    private DcMotor turn = null;
+    private boolean aPrev = false;
+    private boolean bPrev = false;
+    private boolean xPrev = false;
+    private boolean yPrev = false;
+    private boolean lbPrev =false;
+    private boolean rbPrev = false;
 
 
 
@@ -35,6 +45,12 @@ public class RoverRuckusTeleOp extends LinearOpMode {
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);backRightDrive.setDirection(DcMotor.Direction.FORWARD);
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        pully = hardwareMap.get(DcMotor.class, "pully");
+        turn = hardwareMap.get(DcMotor.class, "turn");
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        pully.setDirection(DcMotorSimple.Direction.FORWARD);
+        turn.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
 
@@ -50,7 +66,26 @@ public class RoverRuckusTeleOp extends LinearOpMode {
         runtime.reset();
         while (opModeIsActive()) {
             drive();
+            if(gamepad1.right_trigger!=0||gamepad1.left_trigger!=0){
+                turn.setPower(0.35*(gamepad1.right_trigger+(-1*gamepad1.left_trigger)));
+            }else{
+                turn.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
 
+            if(gamepad1.a){
+                pully.setPower(0.75);
+            }else if(gamepad1.b){
+                pully.setPower(-0.75);
+            }else{
+                pully.setPower(0);
+            }
+            if(gamepad1.x){
+                intake.setPower(1);
+            }else if(gamepad1.y){
+                intake.setPower(-1);
+            }else{
+                intake.setPower(0);
+            }
             //TASKS:
 
             //When the A button is pressed on gamepad 1

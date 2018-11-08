@@ -37,7 +37,12 @@ public class bleg extends LinearOpMode{
 
         runtime.reset();
         while (opModeIsActive()) {
-            turn.setPower(gamepad1.right_trigger+(-1*gamepad1.left_trigger));
+            if(gamepad1.right_trigger!=0||gamepad1.left_trigger!=0){
+                turn.setPower(0.5*(gamepad1.right_trigger+(-1*gamepad1.left_trigger)));
+            }else{
+                turn.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
+
             if(gamepad1.a){
                 pully.setPower(0.75);
             }else if(gamepad1.b){
