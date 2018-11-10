@@ -72,7 +72,7 @@ public class RoverRuckusTeleOp extends LinearOpMode {
             if(turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER))
             {
                 if(gamepad2.right_stick_y<-0.2||gamepad2.right_stick_y>0.2 || gamepad2.left_stick_y>0.2 ||gamepad2.left_stick_y<-0.2){
-                        turn.setPower((-0.1*gamepad2.right_stick_y-0.35*gamepad2.left_stick_y));
+                        turn.setPower((0.1*gamepad2.right_stick_y+0.35*gamepad2.left_stick_y));
                 }else{
                     turn.setPower(0);
                     turn.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -83,7 +83,7 @@ public class RoverRuckusTeleOp extends LinearOpMode {
                 if(gamepad1.left_bumper)
                 {
                     turn.setDirection(DcMotorSimple.Direction.REVERSE);
-                    turn.setTargetPosition(startPosition + 760);
+                    turn.setTargetPosition(startPosition + 400);
                     turn.setPower(0.3);
                 }
                 if(gamepad1.right_bumper)
@@ -111,9 +111,9 @@ public class RoverRuckusTeleOp extends LinearOpMode {
             }else{
                 pully.setPower(0);
             }
-            if(gamepad1.x){
+            if(gamepad2.x){
                 intake.setPower(1);
-            }else if(gamepad1.y){
+            }else if(gamepad2.y){
                 intake.setPower(-1);
             }else{
                 intake.setPower(0);

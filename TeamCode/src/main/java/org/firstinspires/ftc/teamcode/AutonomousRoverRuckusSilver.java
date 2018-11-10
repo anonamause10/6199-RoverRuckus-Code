@@ -117,13 +117,16 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
          **/
 
         frontLeftDrive.setPower(-0.5);frontRightDrive.setPower(-0.5);backLeftDrive.setPower(-0.5);backRightDrive.setPower(-0.5);
-        sleep(1425);
+        sleep(1200);
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
         marker.setPosition(0.8);
-        sleep(900);
+        sleep(1000);
         marker.setPosition(0.2);
+        frontLeftDrive.setPower(0.5);frontRightDrive.setPower(0.5);backLeftDrive.setPower(0.5);backRightDrive.setPower(0.5);
+        sleep(200);
+        frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
         boolean turned = false;
-        double vuAng = 45;
+        double vuAng = 135;
         while (!turned) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             gravity = imu.getGravity();
@@ -171,6 +174,7 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
                 backRightDrive.setPower(-0.2);
             }
         }
+
         if(runtime.seconds()>27) {
 
         }else {
