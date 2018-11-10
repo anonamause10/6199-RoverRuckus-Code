@@ -49,7 +49,7 @@ public class RoverRuckusTeleOp extends LinearOpMode {
         intake = hardwareMap.get(CRServo.class, "intake");
         pully = hardwareMap.get(DcMotor.class, "pully");
         turn = hardwareMap.get(DcMotor.class, "turn");
-        intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake.setDirection(CRServo.Direction.FORWARD);
         pully.setDirection(DcMotorSimple.Direction.FORWARD);
         turn.setDirection(DcMotorSimple.Direction.FORWARD);
         turn.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -71,12 +71,10 @@ public class RoverRuckusTeleOp extends LinearOpMode {
             drive();
             if(turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER))
             {
-                if(gamepad1.right_stick_y!=0){
-                    if(gamepad1.right_stick_y < 0)
-                        turn.setPower((0.1*gamepad1.right_stick_y));
-                    else
-                        turn.setPower((0.35*gamepad1.right_stick_y));
+                if(gamepad2.right_stick_y<-0.2||gamepad2.right_stick_y>0.2 || gamepad2.left_stick_y>0.2 ||gamepad2.left_stick_y<-0.2){
+                        turn.setPower((-0.1*gamepad2.right_stick_y-0.35*gamepad2.left_stick_y));
                 }else{
+                    turn.setPower(0);
                     turn.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                     turn.setTargetPosition(0);
                 }
@@ -85,26 +83,26 @@ public class RoverRuckusTeleOp extends LinearOpMode {
                 if(gamepad1.left_bumper)
                 {
                     turn.setDirection(DcMotorSimple.Direction.REVERSE);
-                    turn.setTargetPosition(startPosition + 328);
-                    turn.setPower(0.2);
+                    turn.setTargetPosition(startPosition + 760);
+                    turn.setPower(0.3);
                 }
                 if(gamepad1.right_bumper)
                 {
                     turn.setDirection(DcMotorSimple.Direction.FORWARD);
-                    turn.setTargetPosition(startPosition);
+                    turn.setTargetPosition(startPosition+10);
                     turn.setPower(0.2);
                 }
             }
 
-            if(gamepad1.back && gamepad1.back!=backPrev && turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER))
+            if((gamepad1.back||gamepad2.back) && !backPrev && turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER))
             {
                 turn.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
-            else if(gamepad1.back && gamepad1.back!=backPrev && turn.getMode().equals(DcMotor.RunMode.RUN_TO_POSITION))
+            else if((gamepad1.back||gamepad2.back) && !backPrev && turn.getMode().equals(DcMotor.RunMode.RUN_TO_POSITION))
             {
                 turn.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
-            backPrev = gamepad1.back;
+            backPrev = gamepad1.back||gamepad2.back;
 
             if(gamepad1.a){
                 pully.setPower(0.75);
@@ -120,38 +118,17 @@ public class RoverRuckusTeleOp extends LinearOpMode {
             }else{
                 intake.setPower(0);
             }
-            //TASKS:
-
-            //When the A button is pressed on gamepad 1
-            //Activate the intake
-            //If the intake is activated, turn off the intake
-
-            //When the B button is pressed on gamepad 1
-            //Activate the intake in REVERSE
-            //If the intake is activated, turn off the intake
-
-            //When the right bumper is pressed on gamepad 1
-            //Extend the intake
-
-            //When the left bumper is pressed on gamepad 1
-            //Retract the intake
-
-            //When the X button is pressed on gamepad 1
-            //if the intake is in the DOWN position
-                //move the intake to the UP position
-            //else
-                //move the intake to the DOWN position
-
-
-
-            //Display the current power of the intake
-            //Display what position the intake is in (UP or DOWN)
 
 
             telemetry.addData("Wheel Power", "front left (%.2f), front right (%.2f), " +
                     "back left (%.2f), back right (%.2f)", frontLeftDrive.getPower(), frontRightDrive.getPower(),
                     backLeftDrive.getPower(), backRightDrive.getPower());
             telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("turn", "Power:" + turn.getPower());
+            if(turn.getMode().equals(DcMotor.RunMode.RUN_TO_POSITION)) {
+                telemetry.addData("turn", "CurrPos" + turn.getCurrentPosition());
+                telemetry.addData("turn", "TargetPos" + turn.getTargetPosition());
+            }
             telemetry.addData((turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER)?"free":"direct"), 0);
             telemetry.update();
         }

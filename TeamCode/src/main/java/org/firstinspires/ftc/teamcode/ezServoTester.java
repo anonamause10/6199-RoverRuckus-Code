@@ -23,7 +23,7 @@ public class ezServoTester extends LinearOpMode {
             telemetry.addData("Servo", "0");
             telemetry.update();
             sleep(4000);
-            marker.setPosition(0.5);
+            marker.setPosition(0.8);
             telemetry.addData("Servo", "0.5");
             telemetry.update();
             sleep(8000);
