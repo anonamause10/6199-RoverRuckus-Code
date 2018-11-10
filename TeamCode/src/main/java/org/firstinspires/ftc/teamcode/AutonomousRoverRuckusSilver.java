@@ -48,7 +48,7 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        driveTo(4);
+        /**driveTo(4);
         telemetry.addData("BIG REE", "eh");
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
@@ -69,23 +69,19 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         telemetry.update();
          **/
 
+        frontLeftDrive.setPower(0.5);frontRightDrive.setPower(0.5);backLeftDrive.setPower(0.5);backRightDrive.setPower(0.5);
+        sleep(500);
+        frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
+        sleep(4000);
+        driveTo(12);
 
 
     }
     void driveTo(double distance) {
         int ticks = (int)(1440 * distance/circumference);
-        frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightDrive.setTargetPosition(ticks);
         frontLeftDrive.setTargetPosition(ticks);
-        backLeftDrive.setTargetPosition(ticks);
-        backRightDrive.setTargetPosition(ticks);
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -94,12 +90,9 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         frontLeftDrive.setPower(0.1);
         backLeftDrive.setPower(0.1);
         backRightDrive.setPower(0.1);
-        while (frontLeftDrive.isBusy() && frontRightDrive.isBusy() && backRightDrive.isBusy() && backLeftDrive.isBusy()) {
+        while (frontLeftDrive.isBusy()) {
         }
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightDrive.setPower(0);
         frontLeftDrive.setPower(0);
         backLeftDrive.setPower(0);
