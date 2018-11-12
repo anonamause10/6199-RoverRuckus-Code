@@ -71,8 +71,8 @@ public class RoverRuckusTeleOp extends LinearOpMode {
             drive();
             if(turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER))
             {
-                if(gamepad2.right_stick_y<-0.2||gamepad2.right_stick_y>0.2 || gamepad2.left_stick_y>0.2 ||gamepad2.left_stick_y<-0.2){
-                        turn.setPower((0.1*gamepad2.right_stick_y+0.35*gamepad2.left_stick_y));
+                if( gamepad2.left_stick_y>0.2 || gamepad2.left_stick_y<-0.2){
+                        turn.setPower(0.45*gamepad2.left_stick_y);
                 }else{
                     turn.setPower(0);
                     turn.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -80,13 +80,13 @@ public class RoverRuckusTeleOp extends LinearOpMode {
                 }
             }
             else{
-                if(gamepad1.left_bumper)
+                if(gamepad2.left_bumper)
                 {
                     turn.setDirection(DcMotorSimple.Direction.REVERSE);
                     turn.setTargetPosition(startPosition + 400);
                     turn.setPower(0.3);
                 }
-                if(gamepad1.right_bumper)
+                if(gamepad2.right_bumper)
                 {
                     turn.setDirection(DcMotorSimple.Direction.FORWARD);
                     turn.setTargetPosition(startPosition+10);
@@ -94,19 +94,19 @@ public class RoverRuckusTeleOp extends LinearOpMode {
                 }
             }
 
-            if((gamepad1.back||gamepad2.back) && !backPrev && turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER))
+            if(gamepad2.back&& !backPrev && turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER))
             {
                 turn.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
-            else if((gamepad1.back||gamepad2.back) && !backPrev && turn.getMode().equals(DcMotor.RunMode.RUN_TO_POSITION))
+            else if((gamepad2.back) && !backPrev && turn.getMode().equals(DcMotor.RunMode.RUN_TO_POSITION))
             {
                 turn.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
-            backPrev = gamepad1.back||gamepad2.back;
+            backPrev = gamepad2.back;
 
-            if(gamepad1.a){
+            if(gamepad2.a){
                 pully.setPower(0.75);
-            }else if(gamepad1.b){
+            }else if(gamepad2.b){
                 pully.setPower(-0.75);
             }else{
                 pully.setPower(0);
@@ -139,11 +139,17 @@ public class RoverRuckusTeleOp extends LinearOpMode {
 
         double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
-        double rightX = gamepad1.right_trigger - gamepad1.left_trigger;
+        double rightX = gamepad1.right_stick_x;
         double v1 = r * Math.cos(robotAngle) - rightX;
         double v2 = r * Math.sin(robotAngle) + rightX;
         double v3 = r * Math.sin(robotAngle) - rightX;
         double v4 = r * Math.cos(robotAngle) + rightX;
+        if(gamepad1.x) {
+            v1 *=2;
+            v2 *=2;
+            v3 *=2;
+            v4 *=2;
+        }
         frontLeftDrive.setPower(v1*0.5);
         frontRightDrive.setPower(v2*0.5);
         backLeftDrive.setPower(v3*0.5);
