@@ -19,7 +19,6 @@ public class RoverRuckusTeleOp extends LinearOpMode {
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
 
-    private boolean intakeDown = false;
     private CRServo intake = null;
     private DcMotor pully = null;
     private DcMotor turn = null;
