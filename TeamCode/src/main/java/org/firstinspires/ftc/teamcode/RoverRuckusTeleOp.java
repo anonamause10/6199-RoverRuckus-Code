@@ -57,10 +57,6 @@ public class RoverRuckusTeleOp extends LinearOpMode {
 
 
 
-
-
-
-
         telemetry.addData("Robot", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
