@@ -29,10 +29,7 @@ public class RoverRuckusTeleOp extends LinearOpMode {
     private boolean backPrev =false;
     private boolean rbPrev = false;
 
-
-
-
-
+    private DcMotor linAct = null;
 
 
     /*
@@ -53,6 +50,7 @@ public class RoverRuckusTeleOp extends LinearOpMode {
         turn.setDirection(DcMotorSimple.Direction.FORWARD);
         turn.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         int startPosition = turn.getCurrentPosition();
+        linAct = hardwareMap.get(DcMotor.class, "linAct");
 
 
 
@@ -113,6 +111,29 @@ public class RoverRuckusTeleOp extends LinearOpMode {
             }else{
                 intake.setPower(0);
             }
+            if(!gamepad2.x && !gamepad2.y) {
+                if (gamepad1.x && !xPrev && intake.getPower() < 1) {
+                    intake.setPower(1);
+                } else if (gamepad1.x && !xPrev && intake.getPower() != 0) {
+                    intake.setPower(0);
+                }
+
+                if (gamepad1.y && !yPrev && intake.getPower() > -1) {
+                    intake.setPower(-1);
+                } else if (gamepad1.y && !yPrev && intake.getPower() != 0) {
+                    intake.setPower(0);
+                }
+            }
+            xPrev = gamepad1.x;
+            yPrev = gamepad1.y;
+
+            if(gamepad1.a){
+                linAct.setPower(1);
+            }else if(gamepad1.b){
+                linAct.setPower(-1);
+            }else{
+                linAct.setPower(0);
+            }
 
 
             telemetry.addData("Wheel Power", "front left (%.2f), front right (%.2f), " +
@@ -124,6 +145,7 @@ public class RoverRuckusTeleOp extends LinearOpMode {
                 telemetry.addData("turn", "CurrPos" + turn.getCurrentPosition());
                 telemetry.addData("turn", "TargetPos" + turn.getTargetPosition());
             }
+            telemetry.addData("linearActuator", "Power:" + linAct.getPower());
             telemetry.addData((turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER)?"free":"direct"), 0);
             telemetry.update();
         }

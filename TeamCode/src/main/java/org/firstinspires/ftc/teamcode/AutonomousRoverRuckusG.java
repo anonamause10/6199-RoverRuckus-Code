@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -24,14 +25,15 @@ import java.util.Locale;
 /**
  * Created by isong on 10/17/18.
  */
-@Autonomous(name="Silver Autonomous ROVERRUCKUS")
-public class AutonomousRoverRuckusSilver extends LinearOpMode {
+@Autonomous(name="GOLD Autonomous ROVERRUCKUS")
+public class AutonomousRoverRuckusG extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeftDrive = null;
     private DcMotor frontRightDrive = null;
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
+    private DcMotor linAct = null;
     private Servo marker = null;
     private double ratio = 1.5;
     private double circumference = 4.0*Math.PI*ratio;
@@ -59,10 +61,12 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         marker = hardwareMap.get(Servo.class, "marker");
         marker.setDirection(Servo.Direction.FORWARD);
         marker.setPosition(0);
+        linAct = hardwareMap.get(DcMotor.class, "linAct");
+        linAct.setDirection(DcMotor.Direction.FORWARD);
 
         // Set up the parameters with which we will use our IMU. Note that integration
-// algorithm here just reports accelerations to the logcat log; it doesn't actually
-// provide positional information.
+    // algorithm here just reports accelerations to the logcat log; it doesn't actually
+    // provide positional information.
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -71,9 +75,9 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-// Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-// on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-// and named "imu".
+    // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+    // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+    // and named "imu".
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
@@ -94,39 +98,33 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+        linAct.setPower(-1);
+        sleep(10900);
+        linAct.setPower(0);
+        frontLeftDrive.setPower(-0.5);
+        frontRightDrive.setPower(0.5);
+        backLeftDrive.setPower(-0.5);
+        backRightDrive.setPower(0.5);
+        sleep(600);
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
 
-        /**driveTo(4);
-        telemetry.addData("BIG REE", "eh");
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.update();
-        sleep(2000);
-        /**driveBackTo(4);
-        telemetry.addData("BIG REE", "beh");
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.update();
-        sleep(2000);
-        driveLeftTo(4);
-        telemetry.addData("BIG REE", "teh");
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.update();
-        sleep(2000);
-        driveRightTo(4);
-        telemetry.addData("BIG REE", "meh");
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.update();
-         **/
+        boolean turned = false;
+        double vuAng = 179;
 
-        frontLeftDrive.setPower(-0.5);frontRightDrive.setPower(-0.5);backLeftDrive.setPower(-0.5);backRightDrive.setPower(-0.5);
+        frontLeftDrive.setPower(0.5);frontRightDrive.setPower(0.5);backLeftDrive.setPower(0.5);backRightDrive.setPower(0.5);
         sleep(1200);
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
         marker.setPosition(0.8);
         sleep(1000);
         marker.setPosition(0.2);
-        frontLeftDrive.setPower(0.5);frontRightDrive.setPower(0.5);backLeftDrive.setPower(0.5);backRightDrive.setPower(0.5);
+        frontLeftDrive.setPower(-0.5);frontRightDrive.setPower(-0.5);backLeftDrive.setPower(-0.5);backRightDrive.setPower(-0.5);
         sleep(200);
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
-        boolean turned = false;
-        double vuAng = 135;
+         turned = false;
+         vuAng = 135;
         while (!turned) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             gravity = imu.getGravity();
@@ -183,7 +181,7 @@ public class AutonomousRoverRuckusSilver extends LinearOpMode {
             frontRightDrive.setPower(-0.5);
             backLeftDrive.setPower(-0.5);
             backRightDrive.setPower(-0.5);
-            sleep(1425);
+            sleep(1625);
             frontLeftDrive.setPower(0);
             frontRightDrive.setPower(0);
             backLeftDrive.setPower(0);
