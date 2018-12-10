@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -22,9 +23,9 @@ import java.util.Locale;
 /**
  * Created by isong on 11/29/18.
  */
-@Autonomous(name = "SILVER AUTONOMOUS ROVER RUCKUS")
+@TeleOp(name = "SILVER AUTONOMOUS TESTER")
 
-public class AutonomousRoverRuckusS extends LinearOpMode{
+public class AutonomousTesterSilver extends LinearOpMode{
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeftDrive = null;
@@ -36,12 +37,23 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
     private double ratio = 1.5;
     private double circumference = 4.0*Math.PI*ratio;
     private int[] numbers = {700, 900, 1600, 2350};
+    private boolean aPrev = false;
+    private boolean xPrev = false;
+    private boolean dUpPrev = false;
+    private boolean dDownPrev = false;
+    private boolean lbPrev = false;
+    private boolean rbPrev = false;
+    private int incremented = 0;
+    private int increment = 50;
     // The IMU sensor object
     BNO055IMU imu;
 
     // State used for updating telemetry
     Orientation angles;
     Acceleration gravity;
+
+
+
 
 
     /*
@@ -98,7 +110,25 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+        while(opModeIsActive()) {
 
+            if(gamepad1.right_bumper && !rbPrev){
+                increment += 25;
+            }else if (gamepad1.left_bumper && !lbPrev){
+                increment -= 25;
+            }
+
+            if(gamepad1.dpad_up && !dUpPrev){
+                numbers[incremented] += increment;
+            }else if(gamepad1.dpad_down && !dDownPrev){
+                numbers[incremented] -= increment;
+            }
+            if(gamepad1.x && !xPrev){
+                incremented++;
+                if(incremented>3)
+                    incremented = 0;
+            }
+            if(gamepad1.a && !aPrev) {
                 frontLeftDrive.setPower(0.4);
 
                 frontRightDrive.setPower(0.4);
@@ -227,7 +257,6 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
 
                 marker.setPosition(0.7);
                 marker.setPosition(0);
-
                 turned = false;
                 vuAng = 135;
                 while (!turned) {
@@ -283,9 +312,7 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
                 backLeftDrive.setPower(-0.4);
 
                 backRightDrive.setPower(-0.4);
-
                 sleep(numbers[3]);
-
                 frontLeftDrive.setPower(0);
 
                 frontRightDrive.setPower(0);
@@ -293,8 +320,21 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
                 backLeftDrive.setPower(0);
 
                 backRightDrive.setPower(0);
+            }
 
+            aPrev = gamepad1.a;
+            rbPrev = gamepad1.right_bumper;
+            lbPrev = gamepad1.left_bumper;
+            xPrev = gamepad1.x;
+            dUpPrev = gamepad1.dpad_up;
+            dDownPrev = gamepad1.dpad_down;
 
+            telemetry.addData("Numbers", numbers[0] + "," + numbers[1] + "," + numbers[2] + "," + numbers[3]);
+            telemetry.addData("increment", increment);
+            telemetry.addData("current incremented", incremented);
+            telemetry.addData("Runtime:", runtime);
+            telemetry.update();
+        }
     }
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";

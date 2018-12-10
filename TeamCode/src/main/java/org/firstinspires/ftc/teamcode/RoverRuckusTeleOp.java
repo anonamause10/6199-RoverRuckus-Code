@@ -104,28 +104,29 @@ public class RoverRuckusTeleOp extends LinearOpMode {
             }else{
                 pully.setPower(0);
             }
-            if(gamepad2.x){
+            /**if(gamepad2.x){
                 intake.setPower(1);
             }else if(gamepad2.y){
                 intake.setPower(-1);
             }else{
                 intake.setPower(0);
             }
-            if(!gamepad2.x && !gamepad2.y) {
-                if (gamepad1.x && !xPrev && intake.getPower() < 1) {
+             */
+
+                if (gamepad2.x && !xPrev && (intake.getPower() != 1)) {
                     intake.setPower(1);
-                } else if (gamepad1.x && !xPrev && intake.getPower() != 0) {
+                }else if (gamepad2.x && !xPrev && intake.getPower() != 0) {
                     intake.setPower(0);
                 }
 
-                if (gamepad1.y && !yPrev && intake.getPower() > -1) {
+                if (gamepad2.y && !yPrev && (intake.getPower() != -1)) {
                     intake.setPower(-1);
-                } else if (gamepad1.y && !yPrev && intake.getPower() != 0) {
+                } else if (gamepad2.y && !yPrev && (intake.getPower() != 0)) {
                     intake.setPower(0);
                 }
-            }
-            xPrev = gamepad1.x;
-            yPrev = gamepad1.y;
+
+            xPrev = gamepad2.x;
+            yPrev = gamepad2.y;
 
             if(gamepad1.a){
                 linAct.setPower(1);
