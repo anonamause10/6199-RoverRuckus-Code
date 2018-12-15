@@ -4,8 +4,11 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -33,18 +36,21 @@ public class AutonomousTesterSilver extends LinearOpMode{
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
     private DcMotor linAct = null;
+    private CRServo intake = null;
     private Servo marker = null;
     private double ratio = 1.5;
     private double circumference = 4.0*Math.PI*ratio;
-    private int[] numbers = {700, 900, 1600, 2350};
+    private double[] numbers = {700, 1000, 1700, 2350, 1350, 1350};
     private boolean aPrev = false;
     private boolean xPrev = false;
     private boolean dUpPrev = false;
     private boolean dDownPrev = false;
     private boolean lbPrev = false;
     private boolean rbPrev = false;
+    //private double powerR = hardwareMap.voltageSensor.size();
     private int incremented = 0;
     private int increment = 50;
+    private double turningP = 0.3;
     // The IMU sensor object
     BNO055IMU imu;
 
@@ -65,6 +71,8 @@ public class AutonomousTesterSilver extends LinearOpMode{
         frontRightDrive = hardwareMap.get(DcMotor.class, "fright");
         backLeftDrive = hardwareMap.get(DcMotor.class, "bleft");
         backRightDrive = hardwareMap.get(DcMotor.class, "bright");
+        intake = hardwareMap.get(CRServo.class, "intake");
+        intake.setDirection(CRServo.Direction.FORWARD);
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -75,7 +83,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
         backRightDrive.setPower(0);
         marker = hardwareMap.get(Servo.class, "marker");
         marker.setDirection(Servo.Direction.FORWARD);
-        marker.setPosition(0);
+        marker.setPosition(0.7);
         linAct = hardwareMap.get(DcMotor.class, "linAct");
         linAct.setDirection(DcMotor.Direction.FORWARD);
 
@@ -103,8 +111,14 @@ public class AutonomousTesterSilver extends LinearOpMode{
         String angle = formatAngle(angles.angleUnit, angles.firstAngle);
         double ang = Double.parseDouble(angle);
         telemetry.addData("Angle", ang);
-
-
+        /**try {
+            VoltageSensor pls = hardwareMap.voltageSensor.get("Expansion Hub 2");
+            ratio = pls.getVoltage() / pls.getVoltage();
+        }catch(NullPointerException e){
+            telemetry.addLine("REEEEEEEEE");
+        }*/
+        //double voltage = hardwareMap.getAll(VoltageSensor.class).get(0).getVoltage();
+        //ratio = voltage/voltage;
         telemetry.addData("Robot", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
@@ -123,12 +137,43 @@ public class AutonomousTesterSilver extends LinearOpMode{
             }else if(gamepad1.dpad_down && !dDownPrev){
                 numbers[incremented] -= increment;
             }
+            if(gamepad1.b){
+                linAct.setPower(1);
+            }else{
+                linAct.setPower(0);
+            }
             if(gamepad1.x && !xPrev){
                 incremented++;
-                if(incremented>3)
+                if(incremented>5)
                     incremented = 0;
             }
             if(gamepad1.a && !aPrev) {
+                turningP = 0.3;
+                linAct.setPower(-1);
+                sleep(7200);
+                linAct.setPower(0);
+                frontLeftDrive.setPower(0.4);
+                frontRightDrive.setPower(-0.4);
+                backLeftDrive.setPower(0.4);
+                backRightDrive.setPower(-0.4);
+
+                sleep(500);
+
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
+
+                linAct.setPower(1);
+                sleep(1500);
+                linAct.setPower(0);
+                frontLeftDrive.setPower(-0.4);
+                frontRightDrive.setPower(0.4);
+                backLeftDrive.setPower(-0.4);
+                backRightDrive.setPower(0.4);
+
+                sleep(500);
+
                 frontLeftDrive.setPower(0.4);
 
                 frontRightDrive.setPower(0.4);
@@ -136,7 +181,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backLeftDrive.setPower(0.4);
 
                 backRightDrive.setPower(0.4);
-                sleep(numbers[0]);
+                sleep((int)numbers[0]);
 
                 boolean turned = false;
                 double vuAng = 90;
@@ -150,21 +195,21 @@ public class AutonomousTesterSilver extends LinearOpMode{
                     telemetry.addData("Angleeee", angle);
                     telemetry.update();
                     if (ang < vuAng - 1 && ang > 0) {
-                        frontLeftDrive.setPower(0.2);
+                        frontLeftDrive.setPower(turningP);
 
-                        frontRightDrive.setPower(-0.2);
+                        frontRightDrive.setPower(-turningP);
 
-                        backLeftDrive.setPower(0.2);
+                        backLeftDrive.setPower(turningP);
 
-                        backRightDrive.setPower(-0.2);
+                        backRightDrive.setPower(-turningP);
                     } else if (ang > vuAng + 1 && ang > 0) {
-                        frontLeftDrive.setPower(-0.2);
+                        frontLeftDrive.setPower(-turningP);
 
-                        frontRightDrive.setPower(0.2);
+                        frontRightDrive.setPower(turningP);
 
-                        backLeftDrive.setPower(-0.2);
+                        backLeftDrive.setPower(-turningP);
 
-                        backRightDrive.setPower(0.2);
+                        backRightDrive.setPower(turningP);
                     } else if (Math.abs(vuAng - ang) < 1) {
                         frontLeftDrive.setPower(0.15);
 
@@ -175,13 +220,13 @@ public class AutonomousTesterSilver extends LinearOpMode{
                         backRightDrive.setPower(-0.15);
                     }
                     if (ang < 0) {
-                        frontLeftDrive.setPower(0.2);
+                        frontLeftDrive.setPower(turningP);
 
-                        frontRightDrive.setPower(-0.2);
+                        frontRightDrive.setPower(-turningP);
 
-                        backLeftDrive.setPower(0.2);
+                        backLeftDrive.setPower(turningP);
 
-                        backRightDrive.setPower(-0.2);
+                        backRightDrive.setPower(-turningP);
                     }
                 }
                 frontLeftDrive.setPower(0.4);
@@ -191,9 +236,9 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backLeftDrive.setPower(0.4);
 
                 backRightDrive.setPower(0.4);
-                sleep(numbers[1]);
+                sleep((int)numbers[1]);
                 turned = false;
-                vuAng = 130;
+                vuAng = numbers[4]/10;
                 while (!turned) {
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                     gravity = imu.getGravity();
@@ -205,21 +250,21 @@ public class AutonomousTesterSilver extends LinearOpMode{
 
                     telemetry.update();
                     if (ang < vuAng - 1 && ang > 0) {
-                        frontLeftDrive.setPower(0.2);
+                        frontLeftDrive.setPower(turningP);
 
-                        frontRightDrive.setPower(-0.2);
+                        frontRightDrive.setPower(-turningP);
 
-                        backLeftDrive.setPower(0.2);
+                        backLeftDrive.setPower(turningP);
 
-                        backRightDrive.setPower(-0.2);
+                        backRightDrive.setPower(-turningP);
                     } else if (ang > vuAng + 1 && ang > 0) {
-                        frontLeftDrive.setPower(-0.2);
+                        frontLeftDrive.setPower(-turningP);
 
-                        frontRightDrive.setPower(0.2);
+                        frontRightDrive.setPower(turningP);
 
-                        backLeftDrive.setPower(-0.2);
+                        backLeftDrive.setPower(-turningP);
 
-                        backRightDrive.setPower(0.2);
+                        backRightDrive.setPower(turningP);
                     } else if (Math.abs(vuAng - ang) < 1) {
                         frontLeftDrive.setPower(0.15);
 
@@ -230,13 +275,13 @@ public class AutonomousTesterSilver extends LinearOpMode{
                         backRightDrive.setPower(-0.15);
                     }
                     if (ang < 0) {
-                        frontLeftDrive.setPower(0.2);
+                        frontLeftDrive.setPower(turningP);
 
-                        frontRightDrive.setPower(-0.2);
+                        frontRightDrive.setPower(-turningP);
 
-                        backLeftDrive.setPower(0.2);
+                        backLeftDrive.setPower(turningP);
 
-                        backRightDrive.setPower(-0.2);
+                        backRightDrive.setPower(-turningP);
                     }
                 }
                 frontLeftDrive.setPower(0.4);
@@ -246,7 +291,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backLeftDrive.setPower(0.4);
 
                 backRightDrive.setPower(0.4);
-                sleep(numbers[2]);
+                sleep((int)numbers[2]);
                 frontLeftDrive.setPower(0);
 
                 frontRightDrive.setPower(0);
@@ -255,10 +300,21 @@ public class AutonomousTesterSilver extends LinearOpMode{
 
                 backRightDrive.setPower(0);
 
-                marker.setPosition(0.7);
                 marker.setPosition(0);
+                sleep(100);
+                frontLeftDrive.setPower(-0.4);
+
+                frontRightDrive.setPower(-0.4);
+
+                backLeftDrive.setPower(-0.4);
+
+                backRightDrive.setPower(-0.4);
+                sleep(300);
+
+
+
                 turned = false;
-                vuAng = 135;
+                vuAng = numbers[5]/10;
                 while (!turned) {
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                     gravity = imu.getGravity();
@@ -270,21 +326,21 @@ public class AutonomousTesterSilver extends LinearOpMode{
 
                     telemetry.update();
                     if (ang < vuAng - 1 && ang > 0) {
-                        frontLeftDrive.setPower(0.2);
+                        frontLeftDrive.setPower(turningP);
 
-                        frontRightDrive.setPower(-0.2);
+                        frontRightDrive.setPower(-turningP);
 
-                        backLeftDrive.setPower(0.2);
+                        backLeftDrive.setPower(turningP);
 
-                        backRightDrive.setPower(-0.2);
+                        backRightDrive.setPower(-turningP);
                     } else if (ang > vuAng + 1 && ang > 0) {
-                        frontLeftDrive.setPower(-0.2);
+                        frontLeftDrive.setPower(-turningP);
 
-                        frontRightDrive.setPower(0.2);
+                        frontRightDrive.setPower(turningP);
 
-                        backLeftDrive.setPower(-0.2);
+                        backLeftDrive.setPower(-turningP);
 
-                        backRightDrive.setPower(0.2);
+                        backRightDrive.setPower(turningP);
                     } else if (Math.abs(vuAng - ang) < 1) {
                         frontLeftDrive.setPower(0.15);
 
@@ -295,13 +351,13 @@ public class AutonomousTesterSilver extends LinearOpMode{
                         backRightDrive.setPower(-0.15);
                     }
                     if (ang < 0) {
-                        frontLeftDrive.setPower(0.2);
+                        frontLeftDrive.setPower(turningP);
 
-                        frontRightDrive.setPower(-0.2);
+                        frontRightDrive.setPower(-turningP);
 
-                        backLeftDrive.setPower(0.2);
+                        backLeftDrive.setPower(turningP);
 
-                        backRightDrive.setPower(-0.2);
+                        backRightDrive.setPower(-turningP);
                     }
                 }
 
@@ -312,7 +368,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backLeftDrive.setPower(-0.4);
 
                 backRightDrive.setPower(-0.4);
-                sleep(numbers[3]);
+                sleep((int)numbers[3]);
                 frontLeftDrive.setPower(0);
 
                 frontRightDrive.setPower(0);
@@ -320,6 +376,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backLeftDrive.setPower(0);
 
                 backRightDrive.setPower(0);
+                marker.setPosition(0.7);
             }
 
             aPrev = gamepad1.a;
@@ -329,9 +386,15 @@ public class AutonomousTesterSilver extends LinearOpMode{
             dUpPrev = gamepad1.dpad_up;
             dDownPrev = gamepad1.dpad_down;
 
-            telemetry.addData("Numbers", numbers[0] + "," + numbers[1] + "," + numbers[2] + "," + numbers[3]);
+            telemetry.addData("Numbers:", numbers[0] + "," + numbers[1] + "," + numbers[2] + "," + numbers[3] + ",");
+            telemetry.addData("Turning Angle", + numbers[4]/10 + "," + numbers[5]/10);
             telemetry.addData("increment", increment);
             telemetry.addData("current incremented", incremented);
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            gravity = imu.getGravity();
+            angle = formatAngle(angles.angleUnit, angles.firstAngle);
+            ang = Double.parseDouble(angle);
+            telemetry.addData("Angle:", ang);
             telemetry.addData("Runtime:", runtime);
             telemetry.update();
         }

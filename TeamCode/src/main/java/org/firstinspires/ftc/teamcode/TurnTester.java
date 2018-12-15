@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -16,8 +17,10 @@ public class TurnTester extends LinearOpMode {
     private DcMotor turn = null;
     private boolean backPrev = false;
     private ElapsedTime runtime = new ElapsedTime();
+    private Servo marker = null;
     @Override
     public void runOpMode() throws InterruptedException {
+        marker = hardwareMap.get(Servo.class, "marker");
         turn = hardwareMap.get(DcMotor.class, "turn");
         turn.setDirection(DcMotorSimple.Direction.FORWARD);
         turn.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -27,6 +30,9 @@ public class TurnTester extends LinearOpMode {
         waitForStart();
         runtime.reset();
         while(opModeIsActive()) {
+            if(gamepad1.a){
+
+            }
             if (turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER)) {
                 if (gamepad2.left_stick_y > 0.2 || gamepad2.left_stick_y < -0.2) {
                     turn.setPower(0.45 * gamepad2.left_stick_y);

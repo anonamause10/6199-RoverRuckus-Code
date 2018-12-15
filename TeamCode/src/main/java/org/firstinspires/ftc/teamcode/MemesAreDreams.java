@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
         import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
+        import com.qualcomm.robotcore.eventloop.opmode.Disabled;
         import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
         import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
         import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -17,6 +18,8 @@ package org.firstinspires.ftc.teamcode;
  */
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+@Disabled
+
 @TeleOp(name="TeleOpRobotDriver_Mk_TEST")
 public class MemesAreDreams extends LinearOpMode{
         private ElapsedTime runtime = new ElapsedTime();

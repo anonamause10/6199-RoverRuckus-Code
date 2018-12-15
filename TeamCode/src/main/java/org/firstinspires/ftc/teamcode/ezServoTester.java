@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -23,7 +24,7 @@ public class ezServoTester extends LinearOpMode {
             telemetry.addData("Servo", "0");
             telemetry.update();
             sleep(4000);
-            marker.setPosition(0.8);
+            marker.setPosition(0.7);
             telemetry.addData("Servo", "0.5");
             telemetry.update();
             sleep(8000);
