@@ -60,13 +60,13 @@ public class AutonomousRoverRuckusG extends LinearOpMode {
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
         marker = hardwareMap.get(Servo.class, "marker");
         marker.setDirection(Servo.Direction.FORWARD);
-        marker.setPosition(0);
+        marker.setPosition(0.7);
         linAct = hardwareMap.get(DcMotor.class, "linAct");
         linAct.setDirection(DcMotor.Direction.FORWARD);
 
         // Set up the parameters with which we will use our IMU. Note that integration
-    // algorithm here just reports accelerations to the logcat log; it doesn't actually
-    // provide positional information.
+        // algorithm here just reports accelerations to the logcat log; it doesn't actually
+        // provide positional information.
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -75,9 +75,9 @@ public class AutonomousRoverRuckusG extends LinearOpMode {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-    // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-    // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-    // and named "imu".
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
@@ -99,33 +99,85 @@ public class AutonomousRoverRuckusG extends LinearOpMode {
         waitForStart();
         runtime.reset();
         linAct.setPower(-1);
-        sleep(10900);
+        sleep(7200);
         linAct.setPower(0);
-        frontLeftDrive.setPower(-0.5);
-        frontRightDrive.setPower(0.5);
-        backLeftDrive.setPower(-0.5);
-        backRightDrive.setPower(0.5);
-        sleep(600);
+        frontLeftDrive.setPower(0.4);
+        frontRightDrive.setPower(-0.4);
+        backLeftDrive.setPower(0.4);
+        backRightDrive.setPower(-0.4);
+
+        sleep(500);
+
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
 
-        boolean turned = false;
-        double vuAng = 179;
+        linAct.setPower(1);
+        sleep(1500);
+        linAct.setPower(0);
 
-        frontLeftDrive.setPower(0.5);frontRightDrive.setPower(0.5);backLeftDrive.setPower(0.5);backRightDrive.setPower(0.5);
+        frontLeftDrive.setPower(-0.4);
+        frontRightDrive.setPower(0.4);
+        backLeftDrive.setPower(-0.4);
+        backRightDrive.setPower(0.4);
+        sleep(500);
+        boolean turned = false;
+        double vuAng = 0;
+        double seconds = runtime.seconds();
+        while (!turned) {
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            gravity = imu.getGravity();
+            angle = formatAngle(angles.angleUnit, angles.firstAngle);
+            ang = Double.parseDouble(angle);
+            turned = (ang >= vuAng - 0.7) && (ang <= vuAng + 0.7);
+            telemetry.addData("Angle", ang);
+            telemetry.addData("Angleeee", angle);
+            if(runtime.seconds() - seconds >= 5){
+                break;
+            }
+            telemetry.update();
+            if (ang<0) {
+                frontLeftDrive.setPower(0.3);
+
+                frontRightDrive.setPower(-0.3);
+
+                backLeftDrive.setPower(0.3);
+
+                backRightDrive.setPower(-0.3);
+            }else if(ang>0){
+                frontLeftDrive.setPower(-0.3);
+
+                frontRightDrive.setPower(0.3);
+
+                backLeftDrive.setPower(-0.3);
+
+                backRightDrive.setPower(0.3);
+            }
+        }
+        frontLeftDrive.setPower(0);
+
+        frontRightDrive.setPower(0);
+
+        backLeftDrive.setPower(0);
+
+        backRightDrive.setPower(0);
+        sleep(200);
+        frontLeftDrive.setPower(0.5);
+        frontRightDrive.setPower(0.5);
+        backLeftDrive.setPower(0.5);
+        backRightDrive.setPower(0.5);
         sleep(1200);
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
-        marker.setPosition(0.8);
+        marker.setPosition(0.25);
         sleep(1000);
-        marker.setPosition(0.2);
         frontLeftDrive.setPower(-0.5);frontRightDrive.setPower(-0.5);backLeftDrive.setPower(-0.5);backRightDrive.setPower(-0.5);
         sleep(200);
+        marker.setPosition(0.7);
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
-         turned = false;
-         vuAng = 135;
-        while (!turned) {
+        turned = false;
+        vuAng = 135;
+        while (!turned&&opModeIsActive()) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             gravity = imu.getGravity();
             angle = formatAngle(angles.angleUnit, angles.firstAngle);
@@ -138,14 +190,22 @@ public class AutonomousRoverRuckusG extends LinearOpMode {
             }
             telemetry.update();
             if (ang < vuAng - 1 && ang>0) {
-                frontLeftDrive.setPower(0.2);
+                frontLeftDrive.setPower(0.3);
 
-                frontRightDrive.setPower(-0.2);
+                frontRightDrive.setPower(-0.3);
 
-                backLeftDrive.setPower(0.2);
+                backLeftDrive.setPower(0.3);
 
-                backRightDrive.setPower(-0.2);
+                backRightDrive.setPower(-0.3);
             }else if (ang > vuAng + 1 && ang>0) {
+                frontLeftDrive.setPower(-0.3);
+
+                frontRightDrive.setPower(0.3);
+
+                backLeftDrive.setPower(-0.3);
+
+                backRightDrive.setPower(0.3);
+            }else if(Math.abs(vuAng-ang) < 1) {
                 frontLeftDrive.setPower(-0.2);
 
                 frontRightDrive.setPower(0.2);
@@ -153,34 +213,34 @@ public class AutonomousRoverRuckusG extends LinearOpMode {
                 backLeftDrive.setPower(-0.2);
 
                 backRightDrive.setPower(0.2);
-            }else if(Math.abs(vuAng-ang) < 1) {
-                frontLeftDrive.setPower(-0.15);
-
-                frontRightDrive.setPower(0.15);
-
-                backLeftDrive.setPower(-0.15);
-
-                backRightDrive.setPower(0.15);
             }
             if(ang<0){
-                frontLeftDrive.setPower(0.2);
+                frontLeftDrive.setPower(0.3);
 
-                frontRightDrive.setPower(-0.2);
+                frontRightDrive.setPower(-0.3);
 
-                backLeftDrive.setPower(0.2);
+                backLeftDrive.setPower(0.3);
 
-                backRightDrive.setPower(-0.2);
+                backRightDrive.setPower(-0.3);
             }
         }
+        frontLeftDrive.setPower(0);
+
+        frontRightDrive.setPower(0);
+
+        backLeftDrive.setPower(0);
+
+        backRightDrive.setPower(0);
+        sleep(200);
 
         if(runtime.seconds()>27) {
 
         }else {
 
-            frontLeftDrive.setPower(-0.5);
-            frontRightDrive.setPower(-0.5);
-            backLeftDrive.setPower(-0.5);
-            backRightDrive.setPower(-0.5);
+            frontLeftDrive.setPower(0.5);
+            frontRightDrive.setPower(0.5);
+            backLeftDrive.setPower(0.5);
+            backRightDrive.setPower(0.5);
             sleep(1625);
             frontLeftDrive.setPower(0);
             frontRightDrive.setPower(0);
@@ -266,3 +326,4 @@ public class AutonomousRoverRuckusG extends LinearOpMode {
         driveRightTo(-distance);
     }
 }
+
