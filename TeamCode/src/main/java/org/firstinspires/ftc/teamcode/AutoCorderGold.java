@@ -26,8 +26,8 @@ import java.util.Locale;
 /**
  * Created by isong on 11/29/18.
  */
-@TeleOp(name = "Auto recorder Silver")
-public class AutoCorderSilver extends LinearOpMode {
+@TeleOp(name = "Auto recorder Gold")
+public class AutoCorderGold extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeftDrive = null;
@@ -39,7 +39,7 @@ public class AutoCorderSilver extends LinearOpMode {
     private Servo marker = null;
     private double ratio = 1.5;
     private double circumference = 4.0 * Math.PI * ratio;
-    private double[] numbers = {0, 0, 0, 0, 0, 0};
+    private double[] numbers = {0, 0, 0};
     private int cIndx;
     private boolean aPrev = false;
     private boolean xPrev = false;
@@ -52,7 +52,7 @@ public class AutoCorderSilver extends LinearOpMode {
     private int increment = 50;
     private double turningP = 0.3;
     private boolean inLoop = false;
-    private String[] tates = {"going away from lander", "turning from lander", "going to wall", "turning to depot", "yeeting to depot", "vroomin to crater"};
+    private String[] tates = {"yeeting to depot", "turning to crater","vroomin to crater"};
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -99,13 +99,13 @@ public class AutoCorderSilver extends LinearOpMode {
         while (opModeIsActive()) {
             drive();
             if(gamepad1.dpad_up&&!dUpPrev){
-                cIndx= (cIndx+1)%6;
+                cIndx= (cIndx+1)%3;
             }
             dUpPrev = gamepad1.dpad_up;
             if(gamepad1.dpad_down&&!dDownPrev){
                 cIndx = cIndx-1;
                 if(cIndx<0){
-                    cIndx = 5;
+                    cIndx = 2;
                 }
             }
             dDownPrev = gamepad1.dpad_down;
@@ -124,19 +124,16 @@ public class AutoCorderSilver extends LinearOpMode {
                 xPrev = gamepad1.back;
                 telemetry.update();
             }
-            telemetry.addData("current test:"+tates[cIndx],0);
+            telemetry.addData("current test: "+tates[cIndx],0);
             telemetry.addData(tates[0],numbers[0]);
             telemetry.addData(tates[1],numbers[1]);
             telemetry.addData(tates[2],numbers[2]);
-            telemetry.addData(tates[3],numbers[3]);
-            telemetry.addData(tates[4],numbers[4]);
-            telemetry.addData(tates[5],numbers[5]);
             telemetry.update();
 
 
         }
     }
-    private void drive(){
+    private boolean drive(){
         //DONT TOUCH THIS
 
         double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
@@ -161,6 +158,7 @@ public class AutoCorderSilver extends LinearOpMode {
         frontRightDrive.setPower(v2*0.5);
         backLeftDrive.setPower(v3*0.5);
         backRightDrive.setPower(v4*0.5);
+        return(v1!=0||v2!=0||v3!=0||v4!=0);
         //OK YOU GOOD NOW
     }
 }
