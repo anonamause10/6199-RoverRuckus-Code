@@ -60,7 +60,7 @@ public class AutonomousRoverRuckusG extends LinearOpMode {
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
         marker = hardwareMap.get(Servo.class, "marker");
         marker.setDirection(Servo.Direction.FORWARD);
-        marker.setPosition(0.7);
+        marker.setPosition(0.5);
         linAct = hardwareMap.get(DcMotor.class, "linAct");
         linAct.setDirection(DcMotor.Direction.FORWARD);
 
@@ -169,11 +169,11 @@ public class AutonomousRoverRuckusG extends LinearOpMode {
         backRightDrive.setPower(0.5);
         sleep(1200);
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
-        marker.setPosition(0.25);
+        marker.setPosition(0);
         sleep(1000);
         frontLeftDrive.setPower(-0.5);frontRightDrive.setPower(-0.5);backLeftDrive.setPower(-0.5);backRightDrive.setPower(-0.5);
         sleep(200);
-        marker.setPosition(0.7);
+        marker.setPosition(0.5);
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
         turned = false;
         vuAng = 135;

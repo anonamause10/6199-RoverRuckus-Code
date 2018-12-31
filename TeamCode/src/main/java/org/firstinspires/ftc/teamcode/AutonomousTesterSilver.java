@@ -40,7 +40,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
     private Servo marker = null;
     private double ratio = 1.5;
     private double circumference = 4.0*Math.PI*ratio;
-    private double[] numbers = {700, 1000, 1700, 2350, 1350, 1350};
+    private double[] numbers = {641, 601, 1432, 202, 990, 2010};
     private boolean aPrev = false;
     private boolean xPrev = false;
     private boolean dUpPrev = false;
@@ -87,38 +87,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
         linAct = hardwareMap.get(DcMotor.class, "linAct");
         linAct.setDirection(DcMotor.Direction.FORWARD);
 
-        // Set up the parameters with which we will use our IMU. Note that integration
-// algorithm here just reports accelerations to the logcat log; it doesn't actually
-// provide positional information.
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-// Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-// on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-// and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        gravity = imu.getGravity();
-        String angle = formatAngle(angles.angleUnit, angles.firstAngle);
-        double ang = Double.parseDouble(angle);
-        telemetry.addData("Angle", ang);
-        /**try {
-            VoltageSensor pls = hardwareMap.voltageSensor.get("Expansion Hub 2");
-            ratio = pls.getVoltage() / pls.getVoltage();
-        }catch(NullPointerException e){
-            telemetry.addLine("REEEEEEEEE");
-        }*/
-        //double voltage = hardwareMap.getAll(VoltageSensor.class).get(0).getVoltage();
-        //ratio = voltage/voltage;
         telemetry.addData("Robot", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
@@ -147,6 +116,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 if(incremented>5)
                     incremented = 0;
             }
+
             if(gamepad1.a && !aPrev) {
                 turningP = 0.3;
                 linAct.setPower(-1);
@@ -173,202 +143,89 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backRightDrive.setPower(0.4);
 
                 sleep(500);
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
 
-                frontLeftDrive.setPower(0.4);
+                frontLeftDrive.setPower(0.5);
 
-                frontRightDrive.setPower(0.4);
+                frontRightDrive.setPower(0.5);
 
-                backLeftDrive.setPower(0.4);
+                backLeftDrive.setPower(0.5);
 
-                backRightDrive.setPower(0.4);
+                backRightDrive.setPower(0.5);
+
                 sleep((int)numbers[0]);
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
 
-                boolean turned = false;
-                double vuAng = 90;
-                while (!turned) {
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                    gravity = imu.getGravity();
-                    angle = formatAngle(angles.angleUnit, angles.firstAngle);
-                    ang = Double.parseDouble(angle);
-                    turned = (ang >= vuAng - 0.7) && (ang <= vuAng + 0.7);
-                    telemetry.addData("Angle", ang);
-                    telemetry.addData("Angleeee", angle);
-                    telemetry.update();
-                    if (ang < vuAng - 1 && ang > 0) {
-                        frontLeftDrive.setPower(turningP);
+                frontLeftDrive.setPower(0.5);
 
-                        frontRightDrive.setPower(-turningP);
+                frontRightDrive.setPower(-0.5);
 
-                        backLeftDrive.setPower(turningP);
+                backLeftDrive.setPower(0.5);
 
-                        backRightDrive.setPower(-turningP);
-                    } else if (ang > vuAng + 1 && ang > 0) {
-                        frontLeftDrive.setPower(-turningP);
+                backRightDrive.setPower(-0.5);
 
-                        frontRightDrive.setPower(turningP);
-
-                        backLeftDrive.setPower(-turningP);
-
-                        backRightDrive.setPower(turningP);
-                    } else if (Math.abs(vuAng - ang) < 1) {
-                        frontLeftDrive.setPower(0.15);
-
-                        frontRightDrive.setPower(-0.15);
-
-                        backLeftDrive.setPower(0.15);
-
-                        backRightDrive.setPower(-0.15);
-                    }
-                    if (ang < 0) {
-                        frontLeftDrive.setPower(turningP);
-
-                        frontRightDrive.setPower(-turningP);
-
-                        backLeftDrive.setPower(turningP);
-
-                        backRightDrive.setPower(-turningP);
-                    }
-                }
-                frontLeftDrive.setPower(0.4);
-
-                frontRightDrive.setPower(0.4);
-
-                backLeftDrive.setPower(0.4);
-
-                backRightDrive.setPower(0.4);
                 sleep((int)numbers[1]);
-                turned = false;
-                vuAng = numbers[4]/10;
-                while (!turned) {
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                    gravity = imu.getGravity();
-                    angle = formatAngle(angles.angleUnit, angles.firstAngle);
-                    ang = Double.parseDouble(angle);
-                    turned = (ang >= vuAng - 0.7) && (ang <= vuAng + 0.7);
-                    telemetry.addData("Angle", ang);
-                    telemetry.addData("Angleeee", angle);
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
 
-                    telemetry.update();
-                    if (ang < vuAng - 1 && ang > 0) {
-                        frontLeftDrive.setPower(turningP);
+                frontLeftDrive.setPower(0.5);
 
-                        frontRightDrive.setPower(-turningP);
+                frontRightDrive.setPower(0.5);
 
-                        backLeftDrive.setPower(turningP);
+                backLeftDrive.setPower(0.5);
 
-                        backRightDrive.setPower(-turningP);
-                    } else if (ang > vuAng + 1 && ang > 0) {
-                        frontLeftDrive.setPower(-turningP);
+                backRightDrive.setPower(0.5);
 
-                        frontRightDrive.setPower(turningP);
-
-                        backLeftDrive.setPower(-turningP);
-
-                        backRightDrive.setPower(turningP);
-                    } else if (Math.abs(vuAng - ang) < 1) {
-                        frontLeftDrive.setPower(0.15);
-
-                        frontRightDrive.setPower(-0.15);
-
-                        backLeftDrive.setPower(0.15);
-
-                        backRightDrive.setPower(-0.15);
-                    }
-                    if (ang < 0) {
-                        frontLeftDrive.setPower(turningP);
-
-                        frontRightDrive.setPower(-turningP);
-
-                        backLeftDrive.setPower(turningP);
-
-                        backRightDrive.setPower(-turningP);
-                    }
-                }
-                frontLeftDrive.setPower(0.4);
-
-                frontRightDrive.setPower(0.4);
-
-                backLeftDrive.setPower(0.4);
-
-                backRightDrive.setPower(0.4);
                 sleep((int)numbers[2]);
                 frontLeftDrive.setPower(0);
-
                 frontRightDrive.setPower(0);
-
                 backLeftDrive.setPower(0);
-
                 backRightDrive.setPower(0);
 
-                marker.setPosition(0);
-                sleep(100);
-                frontLeftDrive.setPower(-0.4);
 
-                frontRightDrive.setPower(-0.4);
+                frontLeftDrive.setPower(0.5);
 
-                backLeftDrive.setPower(-0.4);
+                frontRightDrive.setPower(-0.5);
 
-                backRightDrive.setPower(-0.4);
-                sleep(300);
+                backLeftDrive.setPower(0.5);
 
-
-
-                turned = false;
-                vuAng = numbers[5]/10;
-                while (!turned) {
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                    gravity = imu.getGravity();
-                    angle = formatAngle(angles.angleUnit, angles.firstAngle);
-                    ang = Double.parseDouble(angle);
-                    turned = (ang >= vuAng - 0.7) && (ang <= vuAng + 0.7);
-                    telemetry.addData("Angle", ang);
-                    telemetry.addData("Angleeee", angle);
-
-                    telemetry.update();
-                    if (ang < vuAng - 1 && ang > 0) {
-                        frontLeftDrive.setPower(turningP);
-
-                        frontRightDrive.setPower(-turningP);
-
-                        backLeftDrive.setPower(turningP);
-
-                        backRightDrive.setPower(-turningP);
-                    } else if (ang > vuAng + 1 && ang > 0) {
-                        frontLeftDrive.setPower(-turningP);
-
-                        frontRightDrive.setPower(turningP);
-
-                        backLeftDrive.setPower(-turningP);
-
-                        backRightDrive.setPower(turningP);
-                    } else if (Math.abs(vuAng - ang) < 1) {
-                        frontLeftDrive.setPower(0.15);
-
-                        frontRightDrive.setPower(-0.15);
-
-                        backLeftDrive.setPower(0.15);
-
-                        backRightDrive.setPower(-0.15);
-                    }
-                    if (ang < 0) {
-                        frontLeftDrive.setPower(turningP);
-
-                        frontRightDrive.setPower(-turningP);
-
-                        backLeftDrive.setPower(turningP);
-
-                        backRightDrive.setPower(-turningP);
-                    }
-                }
-
-                frontLeftDrive.setPower(-0.4);
-
-                frontRightDrive.setPower(-0.4);
-
-                backLeftDrive.setPower(-0.4);
-
-                backRightDrive.setPower(-0.4);
+                backRightDrive.setPower(-0.5);
                 sleep((int)numbers[3]);
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
+
+                frontLeftDrive.setPower(0.5);
+
+                frontRightDrive.setPower(0.5);
+
+                backLeftDrive.setPower(0.5);
+
+                backRightDrive.setPower(0.5);
+
+                sleep((int)numbers[4]);
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
+
+                frontLeftDrive.setPower(-0.5);
+
+                frontRightDrive.setPower(-0.5);
+
+                backLeftDrive.setPower(-0.5);
+
+                backRightDrive.setPower(-0.5);
+                sleep((int)numbers[5]);
                 frontLeftDrive.setPower(0);
 
                 frontRightDrive.setPower(0);
@@ -376,7 +233,6 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backLeftDrive.setPower(0);
 
                 backRightDrive.setPower(0);
-                marker.setPosition(0.7);
             }
 
             aPrev = gamepad1.a;
@@ -387,28 +243,13 @@ public class AutonomousTesterSilver extends LinearOpMode{
             dDownPrev = gamepad1.dpad_down;
 
             telemetry.addData("Numbers:", numbers[0] + "," + numbers[1] + "," + numbers[2] + "," + numbers[3] + ",");
-            telemetry.addData("Turning Angle", + numbers[4]/10 + "," + numbers[5]/10);
+            telemetry.addData("Numbers2:", + numbers[4] + "," + numbers[5]);
             telemetry.addData("increment", increment);
             telemetry.addData("current incremented", incremented);
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            gravity = imu.getGravity();
-            angle = formatAngle(angles.angleUnit, angles.firstAngle);
-            ang = Double.parseDouble(angle);
-            telemetry.addData("Angle:", ang);
-            telemetry.addData("Runtime:", runtime);
+
             telemetry.update();
         }
     }
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
-    }
 
-    String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
-    }
-
-    String formatDegrees(double degrees) {
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
-    }
 
 }
