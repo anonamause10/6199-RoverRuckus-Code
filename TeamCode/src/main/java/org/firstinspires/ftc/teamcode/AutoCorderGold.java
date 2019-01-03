@@ -27,7 +27,7 @@ import java.util.Locale;
  * Created by isong on 11/29/18.
  */
 @TeleOp(name = "Auto recorder Gold")
-public class AutoCorderGold extends LinearOpMode {
+public class    AutoCorderGold extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeftDrive = null;

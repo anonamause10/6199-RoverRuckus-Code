@@ -108,6 +108,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
             }
             if(gamepad1.b){
                 linAct.setPower(1);
+                marker.setPosition(0.7);
             }else{
                 linAct.setPower(0);
             }
@@ -120,7 +121,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
             if(gamepad1.a && !aPrev) {
                 turningP = 0.3;
                 linAct.setPower(-1);
-                sleep(7200);
+                sleep(7500);
                 linAct.setPower(0);
                 frontLeftDrive.setPower(0.4);
                 frontRightDrive.setPower(-0.4);
@@ -218,6 +219,10 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
 
+                marker.setPosition(0);
+
+                sleep(900);
+
                 frontLeftDrive.setPower(-0.5);
 
                 frontRightDrive.setPower(-0.5);
@@ -233,6 +238,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backLeftDrive.setPower(0);
 
                 backRightDrive.setPower(0);
+
             }
 
             aPrev = gamepad1.a;

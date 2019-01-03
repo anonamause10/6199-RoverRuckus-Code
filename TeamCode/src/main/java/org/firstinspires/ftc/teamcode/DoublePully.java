@@ -21,10 +21,11 @@ public class DoublePully extends LinearOpMode{
         private DcMotor backRightDrive = null;
 
         private CRServo intake = null;
+        private CRServo spin = null;
         private DcMotor pully = null;
         private DcMotor pull2 = null;
         private DcMotor turn = null;
-        private boolean aPrev = false;
+        private boolean lbPrev = false;
         private boolean bPrev = false;
         private boolean xPrev = false;
         private boolean yPrev = false;
@@ -55,6 +56,8 @@ public class DoublePully extends LinearOpMode{
             turn.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             int startPosition = turn.getCurrentPosition();
             linAct = hardwareMap.get(DcMotor.class, "linAct");
+            spin = hardwareMap.get(CRServo.class, "spin");
+            spin.setDirection(CRServo.Direction.FORWARD);
 
 
 
@@ -131,6 +134,13 @@ public class DoublePully extends LinearOpMode{
                 } else if (gamepad2.y && !yPrev && (intake.getPower() != 0)) {
                     intake.setPower(0);
                 }
+                if (gamepad2.right_bumper){
+                    spin.setPower(1);
+                }else if(gamepad2.left_bumper){
+                    spin.setPower(-1);
+                }else{
+                    spin.setPower(0);
+                }
 
                 xPrev = gamepad2.x;
                 yPrev = gamepad2.y;
@@ -155,6 +165,7 @@ public class DoublePully extends LinearOpMode{
                 }
                 telemetry.addData("linearActuator", "Power:" + linAct.getPower());
                 telemetry.addData((turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER)?"free":"direct"), 0);
+                telemetry.addData("Spin", "Power:" + spin.getPower());
                 telemetry.update();
             }
         }
