@@ -40,7 +40,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
     private Servo marker = null;
     private double ratio = 1.5;
     private double circumference = 4.0*Math.PI*ratio;
-    private double[] numbers = {641, 601, 1432, 202, 990, 2010};
+    private double[] numbers = {491, 601, 1302, 227, 895, 2172, 8000};
     private boolean aPrev = false;
     private boolean xPrev = false;
     private boolean dUpPrev = false;
@@ -114,14 +114,14 @@ public class AutonomousTesterSilver extends LinearOpMode{
             }
             if(gamepad1.x && !xPrev){
                 incremented++;
-                if(incremented>5)
+                if(incremented>=numbers.length)
                     incremented = 0;
             }
 
             if(gamepad1.a && !aPrev) {
                 turningP = 0.3;
                 linAct.setPower(-1);
-                sleep(7500);
+                sleep((int)numbers[6]);
                 linAct.setPower(0);
                 frontLeftDrive.setPower(0.4);
                 frontRightDrive.setPower(-0.4);
@@ -223,13 +223,13 @@ public class AutonomousTesterSilver extends LinearOpMode{
 
                 sleep(900);
 
-                frontLeftDrive.setPower(-0.5);
+                frontLeftDrive.setPower(-0.4);
 
-                frontRightDrive.setPower(-0.5);
+                frontRightDrive.setPower(-0.4);
 
-                backLeftDrive.setPower(-0.5);
+                backLeftDrive.setPower(-0.4);
 
-                backRightDrive.setPower(-0.5);
+                backRightDrive.setPower(-0.4);
                 sleep((int)numbers[5]);
                 frontLeftDrive.setPower(0);
 
@@ -249,7 +249,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
             dDownPrev = gamepad1.dpad_down;
 
             telemetry.addData("Numbers:", numbers[0] + "," + numbers[1] + "," + numbers[2] + "," + numbers[3] + ",");
-            telemetry.addData("Numbers2:", + numbers[4] + "," + numbers[5]);
+            telemetry.addData("Numbers2:", + numbers[4] + "," + numbers[5] + "," + numbers[6]);
             telemetry.addData("increment", increment);
             telemetry.addData("current incremented", incremented);
 

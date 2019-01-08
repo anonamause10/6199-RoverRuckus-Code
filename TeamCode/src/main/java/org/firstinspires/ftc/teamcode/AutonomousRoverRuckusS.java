@@ -37,7 +37,7 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
     private CRServo intake = null;
     private double ratio = 1.5;
     private double circumference = 4.0*Math.PI*ratio;
-    private int[] numbers = {641, 601, 1432, 202, 990, 2010};
+    private int[] numbers = {491, 601, 1252, 277, 895, 2172};
     // The IMU sensor object
     BNO055IMU imu;
 
@@ -65,7 +65,7 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
         backRightDrive.setPower(0);
         marker = hardwareMap.get(Servo.class, "marker");
         marker.setDirection(Servo.Direction.FORWARD);
-        marker.setPosition(0.5);
+        marker.setPosition(0.7);
         intake = hardwareMap.get(CRServo.class, "intake");
         intake.setDirection(CRServo.Direction.FORWARD);
         linAct = hardwareMap.get(DcMotor.class, "linAct");
@@ -104,7 +104,7 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
         runtime.reset();
 
         linAct.setPower(-1);
-        sleep(7200);
+        sleep(8000);
         linAct.setPower(0);
         frontLeftDrive.setPower(0.4);
         frontRightDrive.setPower(-0.4);
@@ -197,18 +197,20 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
         backRightDrive.setPower(0.5);
 
         sleep((int)numbers[4]);
+
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
+        marker.setPosition(0);
+        sleep(500);
+        frontLeftDrive.setPower(-0.4);
 
-        frontLeftDrive.setPower(-0.5);
+        frontRightDrive.setPower(-0.4);
 
-        frontRightDrive.setPower(-0.5);
+        backLeftDrive.setPower(-0.4);
 
-        backLeftDrive.setPower(-0.5);
-
-        backRightDrive.setPower(-0.5);
+        backRightDrive.setPower(-0.4);
         sleep((int)numbers[5]);
         frontLeftDrive.setPower(0);
 

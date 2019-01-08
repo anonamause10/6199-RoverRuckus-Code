@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -21,7 +22,8 @@ public class DoublePully extends LinearOpMode{
         private DcMotor backRightDrive = null;
 
         private CRServo intake = null;
-        private CRServo spin = null;
+        private Servo spin = null;
+        private Servo marker = null;
         private DcMotor pully = null;
         private DcMotor pull2 = null;
         private DcMotor turn = null;
@@ -31,6 +33,7 @@ public class DoublePully extends LinearOpMode{
         private boolean yPrev = false;
         private boolean backPrev =false;
         private boolean rbPrev = false;
+        private double spinPos = 0.36;
 
         private DcMotor linAct = null;
 
@@ -56,10 +59,11 @@ public class DoublePully extends LinearOpMode{
             turn.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             int startPosition = turn.getCurrentPosition();
             linAct = hardwareMap.get(DcMotor.class, "linAct");
-            spin = hardwareMap.get(CRServo.class, "spin");
-            spin.setDirection(CRServo.Direction.FORWARD);
-
-
+            spin = hardwareMap.get(Servo.class, "spin");
+            spin.setDirection(Servo.Direction.FORWARD);
+            marker = hardwareMap.get(Servo.class, "marker");
+            marker.setDirection(Servo.Direction.FORWARD);
+            spinPos = spin.getPosition();
 
 
             telemetry.addData("Robot", "Initialized");
@@ -71,8 +75,8 @@ public class DoublePully extends LinearOpMode{
                 drive();
                 if(turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER))
                 {
-                    if( -gamepad2.left_stick_y>0.2 || -gamepad2.left_stick_y<-0.2 ||-gamepad2.right_stick_y>0.2){
-                        turn.setPower(0.45*(-gamepad2.left_stick_y) + 0.3 * (-gamepad2.right_stick_y));
+                    if( -gamepad2.left_stick_y>0.2 || -gamepad2.left_stick_y<-0.2){
+                        turn.setPower(0.75*0.6*(-gamepad2.left_stick_y));
                     }else{
                         turn.setPower(0);
                         turn.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -106,10 +110,10 @@ public class DoublePully extends LinearOpMode{
 
                 if(gamepad2.a){
                     pully.setPower(0.75);
-                    pull2.setPower(0.1);
+                    pull2.setPower(0.2);
                 }else if(gamepad2.b){
                     pull2.setPower(-0.75);
-                    pully.setPower(-0.1);
+                    pully.setPower(-0.2);
                 }else{
                     pully.setPower(0);
                     pull2.setPower(0);
@@ -134,12 +138,15 @@ public class DoublePully extends LinearOpMode{
                 } else if (gamepad2.y && !yPrev && (intake.getPower() != 0)) {
                     intake.setPower(0);
                 }
-                if (gamepad2.right_bumper){
-                    spin.setPower(1);
+                if (gamepad2.right_stick_y>0.05){
+                    spinPos -= 0.003;
+                }else if(gamepad2.right_stick_y<-0.05){
+                    spinPos += 0.003;
+                }
+                if(gamepad2.right_bumper){
+                    spinPos = 0.36;
                 }else if(gamepad2.left_bumper){
-                    spin.setPower(-1);
-                }else{
-                    spin.setPower(0);
+                    spinPos = 0;
                 }
 
                 xPrev = gamepad2.x;
@@ -152,8 +159,19 @@ public class DoublePully extends LinearOpMode{
                 }else{
                     linAct.setPower(0);
                 }
-
-
+                if(gamepad1.left_bumper){
+                    marker.setPosition(0.5);
+                }else if(gamepad1.right_bumper){
+                    marker.setPosition(0);
+                }else if (gamepad1.y){
+                    marker.setPosition(0.7);
+                }
+                if(spinPos<=0){
+                    spinPos = 0;
+                }else if(spinPos>=1){
+                    spinPos = 1;
+                }
+                spin.setPosition(spinPos);
                 telemetry.addData("Wheel Power", "front left (%.2f), front right (%.2f), " +
                                 "back left (%.2f), back right (%.2f)", frontLeftDrive.getPower(), frontRightDrive.getPower(),
                         backLeftDrive.getPower(), backRightDrive.getPower());
@@ -165,7 +183,8 @@ public class DoublePully extends LinearOpMode{
                 }
                 telemetry.addData("linearActuator", "Power:" + linAct.getPower());
                 telemetry.addData((turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER)?"free":"direct"), 0);
-                telemetry.addData("Spin", "Power:" + spin.getPower());
+                telemetry.addData("Spin", "Position:" + spin.getPosition());
+                telemetry.addData("Intake", "Power" + intake.getPower());
                 telemetry.update();
             }
         }
@@ -186,10 +205,16 @@ public class DoublePully extends LinearOpMode{
                 v3 *=2;
                 v4 *=2;
             }
-            frontLeftDrive.setPower(v1*0.5);
-            frontRightDrive.setPower(v2*0.5);
-            backLeftDrive.setPower(v3*0.5);
-            backRightDrive.setPower(v4*0.5);
+            if(frontLeftDrive.getPower()==v1*0.5 && frontRightDrive.getPower()==v2*0.5 && backLeftDrive.getPower()==v3*0.5 &&
+                     backRightDrive.getPower()==v4*0.5){
+
+            }else {
+
+                frontLeftDrive.setPower(v1 * 0.5);
+                frontRightDrive.setPower(v2 * 0.5);
+                backLeftDrive.setPower(v3 * 0.5);
+                backRightDrive.setPower(v4 * 0.5);
+            }
             //OK YOU GOOD NOW
         }
 
