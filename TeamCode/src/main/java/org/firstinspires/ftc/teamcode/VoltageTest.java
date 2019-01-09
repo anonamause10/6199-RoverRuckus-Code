@@ -26,9 +26,9 @@ import java.util.Locale;
 /**
  * Created by isong on 11/29/18.
  */
-@TeleOp(name = "SILVER AUTONOMOUS TESTER")
+@TeleOp(name = "Voltage SILVER AUTONOMOUS TESTER")
 
-public class AutonomousTesterSilver extends LinearOpMode{
+public class VoltageTest extends LinearOpMode{
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeftDrive = null;
@@ -40,7 +40,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
     private Servo marker = null;
     private double ratio = 1.5;
     private double circumference = 4.0*Math.PI*ratio;
-    private double[] numbers = {491, 601, 1252, 277, 895, 2172, 8000};
+    private double[] numbers = {491, 601, 1277, 252, 895, 2172, 8000};
     private boolean aPrev = false;
     private boolean xPrev = false;
     private boolean dUpPrev = false;
@@ -51,6 +51,8 @@ public class AutonomousTesterSilver extends LinearOpMode{
     private int incremented = 0;
     private int increment = 50;
     private double turningP = 0.3;
+    private double voltage = 0.0;
+    private double scale = 0.0;
     // The IMU sensor object
     BNO055IMU imu;
 
@@ -65,6 +67,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
     /*
      * Code to run ONCE when the driver hits INIT
      */
+
     @Override
     public void runOpMode() throws InterruptedException {
         frontLeftDrive = hardwareMap.get(DcMotor.class, "fleft");
@@ -86,9 +89,14 @@ public class AutonomousTesterSilver extends LinearOpMode{
         marker.setPosition(0.7);
         linAct = hardwareMap.get(DcMotor.class, "linAct");
         linAct.setDirection(DcMotor.Direction.FORWARD);
+        voltage = getBatteryVoltage();
+        scale = 12.7/voltage;
+
 
 
         telemetry.addData("Robot", "Initialized");
+        telemetry.addData("Voltage:", voltage);
+        telemetry.addData("Scale", scale);
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -119,16 +127,17 @@ public class AutonomousTesterSilver extends LinearOpMode{
             }
 
             if(gamepad1.a && !aPrev) {
+                scale = 12.7/getBatteryVoltage();
                 turningP = 0.3;
                 linAct.setPower(-1);
-                sleep((int)numbers[6]);
+                sleep((long)(numbers[6]*scale));
                 linAct.setPower(0);
                 frontLeftDrive.setPower(0.4);
                 frontRightDrive.setPower(-0.4);
                 backLeftDrive.setPower(0.4);
                 backRightDrive.setPower(-0.4);
 
-                sleep(500);
+                sleep((long)(500*scale));
 
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
@@ -136,14 +145,14 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backRightDrive.setPower(0);
 
                 linAct.setPower(1);
-                sleep(1500);
+                sleep((long)(1500*scale));
                 linAct.setPower(0);
                 frontLeftDrive.setPower(-0.4);
                 frontRightDrive.setPower(0.4);
                 backLeftDrive.setPower(-0.4);
                 backRightDrive.setPower(0.4);
 
-                sleep(500);
+                sleep((long)(500*scale));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
@@ -157,7 +166,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
 
                 backRightDrive.setPower(0.5);
 
-                sleep((int)numbers[0]);
+                sleep((long)(numbers[0]*scale));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
@@ -171,7 +180,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
 
                 backRightDrive.setPower(-0.5);
 
-                sleep((int)numbers[1]);
+                sleep((long)(numbers[1]*scale));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
@@ -185,7 +194,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
 
                 backRightDrive.setPower(0.5);
 
-                sleep((int)numbers[2]);
+                sleep((long)(numbers[2]*scale));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
@@ -199,7 +208,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backLeftDrive.setPower(0.5);
 
                 backRightDrive.setPower(-0.5);
-                sleep((int)numbers[3]);
+                sleep((long)(numbers[3]*scale));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
@@ -213,7 +222,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
 
                 backRightDrive.setPower(0.5);
 
-                sleep((int)numbers[4]);
+                sleep((long)(numbers[4]*scale));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
@@ -221,7 +230,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
 
                 marker.setPosition(0);
 
-                sleep(900);
+                sleep((long)(900*scale));
 
                 frontLeftDrive.setPower(-0.4);
 
@@ -230,7 +239,7 @@ public class AutonomousTesterSilver extends LinearOpMode{
                 backLeftDrive.setPower(-0.4);
 
                 backRightDrive.setPower(-0.4);
-                sleep((int)numbers[5]);
+                sleep((long)(numbers[5]*scale));
                 frontLeftDrive.setPower(0);
 
                 frontRightDrive.setPower(0);
@@ -251,11 +260,22 @@ public class AutonomousTesterSilver extends LinearOpMode{
             telemetry.addData("Numbers:", numbers[0] + "," + numbers[1] + "," + numbers[2] + "," + numbers[3] + ",");
             telemetry.addData("Numbers2:", + numbers[4] + "," + numbers[5] + "," + numbers[6]);
             telemetry.addData("increment", increment);
+            telemetry.addData("Robot", "Initialized");
+            telemetry.addData("Voltage:", voltage);
             telemetry.addData("current incremented", incremented);
 
             telemetry.update();
         }
     }
-
+    private double getBatteryVoltage() {
+        double result = Double.POSITIVE_INFINITY;
+        for (VoltageSensor sensor : hardwareMap.voltageSensor) {
+            double voltage = sensor.getVoltage();
+            if (voltage > 0) {
+                result = Math.min(result, voltage);
+            }
+        }
+        return result;
+    }
 
 }
