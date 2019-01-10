@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.dogecv;
+package org.firstinspires.ftc.teamcode;
         ;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
@@ -40,7 +40,7 @@ import com.disnodeteam.dogecv.filters.HSVColorFilter;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Disabled
+
 @TeleOp(name="Sampling Order Example", group="DogeCV")
 
 public class SamplingOrderExample extends OpMode

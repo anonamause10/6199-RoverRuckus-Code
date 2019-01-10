@@ -67,7 +67,8 @@ public class    AutoCorderGold extends LinearOpMode {
 
 
 
-
+        telemetry.addData("Voltage:", voltage);
+        telemetry.addData("Scale", scale);
         telemetry.addData("Robot", "Initialized");
         telemetry.update();
         waitForStart();
@@ -160,5 +161,15 @@ public class    AutoCorderGold extends LinearOpMode {
         backRightDrive.setPower(v4*0.5);
         return(v1!=0||v2!=0||v3!=0||v4!=0);
         //OK YOU GOOD NOW
+    }
+    private double getBatteryVoltage() {
+        double result = Double.POSITIVE_INFINITY;
+        for (VoltageSensor sensor : hardwareMap.voltageSensor) {
+            double voltage = sensor.getVoltage();
+            if (voltage > 0) {
+                result = Math.min(result, voltage);
+            }
+        }
+        return result;
     }
 }
