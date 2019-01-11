@@ -53,9 +53,13 @@ public class    AutoCorderGold extends LinearOpMode {
     private double turningP = 0.3;
     private boolean inLoop = false;
     private String[] tates = {"yeeting to depot", "turning to crater","vroomin to crater"};
+    private double voltage;
+    private double scale;
 
     @Override
     public void runOpMode() throws InterruptedException {
+        voltage = getBatteryVoltage();
+        scale = 12.8/voltage;
         frontLeftDrive = hardwareMap.get(DcMotor.class, "fleft");frontRightDrive = hardwareMap.get(DcMotor.class, "fright");
         backLeftDrive = hardwareMap.get(DcMotor.class, "bleft");backRightDrive = hardwareMap.get(DcMotor.class, "bright");
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
