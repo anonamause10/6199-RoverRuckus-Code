@@ -67,7 +67,7 @@ public class    AutoCorderGold extends LinearOpMode {
         frontLeftDrive.setPower(0);frontRightDrive.setPower(0);backLeftDrive.setPower(0);backRightDrive.setPower(0);
         intake = hardwareMap.get(CRServo.class, "intake");
         linAct = hardwareMap.get(DcMotor.class, "linAct");
-        linAct.setDirection(DcMotorSimple.Direction.REVERSE);
+        linAct.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
 
@@ -102,6 +102,10 @@ public class    AutoCorderGold extends LinearOpMode {
         sleep(500);
         runtime.reset();
         while (opModeIsActive()) {
+            voltage = getBatteryVoltage();
+            scale = 12.8/voltage;
+            telemetry.addData("Voltage:", voltage);
+            telemetry.addData("Scale", scale);
             drive();
             if(gamepad1.dpad_up&&!dUpPrev){
                 cIndx= (cIndx+1)%3;

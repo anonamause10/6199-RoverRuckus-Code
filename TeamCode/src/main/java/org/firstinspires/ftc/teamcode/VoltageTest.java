@@ -40,7 +40,7 @@ public class VoltageTest extends LinearOpMode{
     private Servo marker = null;
     private double ratio = 1.5;
     private double circumference = 4.0*Math.PI*ratio;
-    private double[] numbers = {491, 601, 1277, 252, 895, 2172, 8000};
+    private double[] numbers = {471, 601, 1277, 277, 895, 2172, 8000};
     private boolean aPrev = false;
     private boolean xPrev = false;
     private boolean dUpPrev = false;
@@ -86,7 +86,7 @@ public class VoltageTest extends LinearOpMode{
         backRightDrive.setPower(0);
         marker = hardwareMap.get(Servo.class, "marker");
         marker.setDirection(Servo.Direction.FORWARD);
-        marker.setPosition(0.7);
+        marker.setPosition(0);
         linAct = hardwareMap.get(DcMotor.class, "linAct");
         linAct.setDirection(DcMotor.Direction.FORWARD);
         voltage = getBatteryVoltage();
@@ -116,7 +116,7 @@ public class VoltageTest extends LinearOpMode{
             }
             if(gamepad1.b){
                 linAct.setPower(1);
-                marker.setPosition(0.7);
+                marker.setPosition(0);
             }else{
                 linAct.setPower(0);
             }
@@ -132,12 +132,12 @@ public class VoltageTest extends LinearOpMode{
                 linAct.setPower(-1);
                 sleep((long)(numbers[6]*scale));
                 linAct.setPower(0);
-                frontLeftDrive.setPower(0.4);
-                frontRightDrive.setPower(-0.4);
-                backLeftDrive.setPower(0.4);
-                backRightDrive.setPower(-0.4);
+                frontLeftDrive.setPower(0.4*scale);
+                frontRightDrive.setPower(-0.4*scale);
+                backLeftDrive.setPower(0.4*scale);
+                backRightDrive.setPower(-0.4*scale);
 
-                sleep((long)(500*scale));
+                sleep((long)(500));
 
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
@@ -145,101 +145,102 @@ public class VoltageTest extends LinearOpMode{
                 backRightDrive.setPower(0);
 
                 linAct.setPower(1);
-                sleep((long)(1500*scale));
+                sleep((long)(1500));
                 linAct.setPower(0);
-                frontLeftDrive.setPower(-0.4);
-                frontRightDrive.setPower(0.4);
-                backLeftDrive.setPower(-0.4);
-                backRightDrive.setPower(0.4);
+                frontLeftDrive.setPower(-0.4*scale);
+                frontRightDrive.setPower(0.4*scale);
+                backLeftDrive.setPower(-0.4*scale);
+                backRightDrive.setPower(0.4*scale);
 
-                sleep((long)(500*scale));
+                sleep((long)(500));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
 
-                frontLeftDrive.setPower(0.5);
+                frontLeftDrive.setPower(0.5*scale);
 
-                frontRightDrive.setPower(0.5);
+                frontRightDrive.setPower(0.5*scale);
 
-                backLeftDrive.setPower(0.5);
+                backLeftDrive.setPower(0.5*scale);
 
-                backRightDrive.setPower(0.5);
+                backRightDrive.setPower(0.5*scale);
 
-                sleep((long)(numbers[0]*scale));
+                sleep((long)(numbers[0]));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
 
-                frontLeftDrive.setPower(0.5);
+                frontLeftDrive.setPower(0.5*scale);
 
-                frontRightDrive.setPower(-0.5);
+                frontRightDrive.setPower(-0.5*scale);
 
-                backLeftDrive.setPower(0.5);
+                backLeftDrive.setPower(0.5*scale);
 
-                backRightDrive.setPower(-0.5);
+                backRightDrive.setPower(-0.5*scale);
 
-                sleep((long)(numbers[1]*scale));
+                sleep((long)(numbers[1]));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
 
-                frontLeftDrive.setPower(0.5);
+                frontLeftDrive.setPower(0.5*scale);
 
-                frontRightDrive.setPower(0.5);
+                frontRightDrive.setPower(0.5*scale);
 
-                backLeftDrive.setPower(0.5);
+                backLeftDrive.setPower(0.5*scale);
 
-                backRightDrive.setPower(0.5);
+                backRightDrive.setPower(0.5*scale);
 
-                sleep((long)(numbers[2]*scale));
+                sleep((long)(numbers[2]));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
 
 
-                frontLeftDrive.setPower(0.5);
+                frontLeftDrive.setPower(0.5*scale);
 
-                frontRightDrive.setPower(-0.5);
+                frontRightDrive.setPower(-0.5*scale);
 
-                backLeftDrive.setPower(0.5);
+                backLeftDrive.setPower(0.5*scale);
 
-                backRightDrive.setPower(-0.5);
-                sleep((long)(numbers[3]*scale));
+                backRightDrive.setPower(-0.5*scale);
+                sleep((long)(numbers[3]));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
 
-                frontLeftDrive.setPower(0.5);
+                frontLeftDrive.setPower(0.5*scale);
 
-                frontRightDrive.setPower(0.5);
+                frontRightDrive.setPower(0.5*scale);
 
-                backLeftDrive.setPower(0.5);
+                backLeftDrive.setPower(0.5*scale);
 
-                backRightDrive.setPower(0.5);
+                backRightDrive.setPower(0.5*scale);
 
-                sleep((long)(numbers[4]*scale));
+                sleep((long)(numbers[4]));
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
 
-                marker.setPosition(0);
+                marker.setPosition(0.7);
 
                 sleep((long)(900*scale));
 
-                frontLeftDrive.setPower(-0.4);
+                frontLeftDrive.setPower(-0.4*scale);
 
-                frontRightDrive.setPower(-0.4);
+                frontRightDrive.setPower(-0.4*scale);
 
-                backLeftDrive.setPower(-0.4);
+                backLeftDrive.setPower(-0.4*scale);
 
-                backRightDrive.setPower(-0.4);
-                sleep((long)(numbers[5]*scale));
+                backRightDrive.setPower(-0.4*scale);
+                sleep((long)(numbers[5]));
+                marker.setPosition(0);
                 frontLeftDrive.setPower(0);
 
                 frontRightDrive.setPower(0);

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -37,7 +38,10 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
     private CRServo intake = null;
     private double ratio = 1.5;
     private double circumference = 4.0*Math.PI*ratio;
-    private int[] numbers = {491, 601, 1252, 277, 895, 2172};
+    private int[] numbers = {471, 601, 1252, 252, 895, 2172, 8000};
+    private double voltage = 0.0;
+    private double scale = 0.0;
+
     // The IMU sensor object
     BNO055IMU imu;
 
@@ -65,11 +69,13 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
         backRightDrive.setPower(0);
         marker = hardwareMap.get(Servo.class, "marker");
         marker.setDirection(Servo.Direction.FORWARD);
-        marker.setPosition(0.7);
+        marker.setPosition(0);
         intake = hardwareMap.get(CRServo.class, "intake");
         intake.setDirection(CRServo.Direction.FORWARD);
         linAct = hardwareMap.get(DcMotor.class, "linAct");
         linAct.setDirection(DcMotor.Direction.FORWARD);
+        voltage = getBatteryVoltage();
+        scale = 12.7/voltage;
 
         // Set up the parameters with which we will use our IMU. Note that integration
 // algorithm here just reports accelerations to the logcat log; it doesn't actually
@@ -94,24 +100,26 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
         gravity = imu.getGravity();
         String angle = formatAngle(angles.angleUnit, angles.firstAngle);
         double ang = Double.parseDouble(angle);
-        telemetry.addData("Angle", ang);
 
 
         telemetry.addData("Robot", "Initialized");
+        telemetry.addData("Voltage:", voltage);
+        telemetry.addData("Scale", scale);
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
+        scale = 12.7/getBatteryVoltage();
         linAct.setPower(-1);
-        sleep(8000);
+        sleep((long)(numbers[6]*scale));
         linAct.setPower(0);
-        frontLeftDrive.setPower(0.4);
-        frontRightDrive.setPower(-0.4);
-        backLeftDrive.setPower(0.4);
-        backRightDrive.setPower(-0.4);
+        frontLeftDrive.setPower(0.4*scale);
+        frontRightDrive.setPower(-0.4*scale);
+        backLeftDrive.setPower(0.4*scale);
+        backRightDrive.setPower(-0.4*scale);
 
-        sleep(500);
+        sleep((long)(500));
 
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
@@ -119,99 +127,102 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
         backRightDrive.setPower(0);
 
         linAct.setPower(1);
-        sleep(1500);
+        sleep((long)(1500));
         linAct.setPower(0);
-        frontLeftDrive.setPower(-0.4);
-        frontRightDrive.setPower(0.4);
-        backLeftDrive.setPower(-0.4);
-        backRightDrive.setPower(0.4);
+        frontLeftDrive.setPower(-0.4*scale);
+        frontRightDrive.setPower(0.4*scale);
+        backLeftDrive.setPower(-0.4*scale);
+        backRightDrive.setPower(0.4*scale);
 
-        sleep(500);
+        sleep((long)(500));
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
 
-        frontLeftDrive.setPower(0.5);
+        frontLeftDrive.setPower(0.5*scale);
 
-        frontRightDrive.setPower(0.5);
+        frontRightDrive.setPower(0.5*scale);
 
-        backLeftDrive.setPower(0.5);
+        backLeftDrive.setPower(0.5*scale);
 
-        backRightDrive.setPower(0.5);
+        backRightDrive.setPower(0.5*scale);
 
-        sleep((int)numbers[0]);
+        sleep((long)(numbers[0]));
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
 
-        frontLeftDrive.setPower(0.5);
+        frontLeftDrive.setPower(0.5*scale);
 
-        frontRightDrive.setPower(-0.5);
+        frontRightDrive.setPower(-0.5*scale);
 
-        backLeftDrive.setPower(0.5);
+        backLeftDrive.setPower(0.5*scale);
 
-        backRightDrive.setPower(-0.5);
+        backRightDrive.setPower(-0.5*scale);
 
-        sleep((int)numbers[1]);
+        sleep((long)(numbers[1]));
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
 
-        frontLeftDrive.setPower(0.5);
+        frontLeftDrive.setPower(0.5*scale);
 
-        frontRightDrive.setPower(0.5);
+        frontRightDrive.setPower(0.5*scale);
 
-        backLeftDrive.setPower(0.5);
+        backLeftDrive.setPower(0.5*scale);
 
-        backRightDrive.setPower(0.5);
+        backRightDrive.setPower(0.5*scale);
 
-        sleep((int)numbers[2]);
+        sleep((long)(numbers[2]));
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
 
 
-        frontLeftDrive.setPower(0.5);
+        frontLeftDrive.setPower(0.5*scale);
 
-        frontRightDrive.setPower(-0.5);
+        frontRightDrive.setPower(-0.5*scale);
 
-        backLeftDrive.setPower(0.5);
+        backLeftDrive.setPower(0.5*scale);
 
-        backRightDrive.setPower(-0.5);
-        sleep((int)numbers[3]);
+        backRightDrive.setPower(-0.5*scale);
+        sleep((long)(numbers[3]));
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
 
-        frontLeftDrive.setPower(0.5);
+        frontLeftDrive.setPower(0.5*scale);
 
-        frontRightDrive.setPower(0.5);
+        frontRightDrive.setPower(0.5*scale);
 
-        backLeftDrive.setPower(0.5);
+        backLeftDrive.setPower(0.5*scale);
 
-        backRightDrive.setPower(0.5);
+        backRightDrive.setPower(0.5*scale);
 
-        sleep((int)numbers[4]);
-
+        sleep((long)(numbers[4]));
         frontLeftDrive.setPower(0);
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
+
+        marker.setPosition(0.7);
+
+        sleep((long)(900*scale));
+
+        frontLeftDrive.setPower(-0.4*scale);
+
+        frontRightDrive.setPower(-0.4*scale);
+
+        backLeftDrive.setPower(-0.4*scale);
+
+        backRightDrive.setPower(-0.4*scale);
+        sleep((long)(numbers[5]));
         marker.setPosition(0);
-        sleep(500);
-        frontLeftDrive.setPower(-0.4);
-
-        frontRightDrive.setPower(-0.4);
-
-        backLeftDrive.setPower(-0.4);
-
-        backRightDrive.setPower(-0.4);
-        sleep((int)numbers[5]);
         frontLeftDrive.setPower(0);
 
         frontRightDrive.setPower(0);
@@ -219,7 +230,6 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
         backLeftDrive.setPower(0);
 
         backRightDrive.setPower(0);
-
 
     }
     String format(OpenGLMatrix transformationMatrix) {
@@ -233,5 +243,14 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
     String formatDegrees(double degrees) {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
-
+    private double getBatteryVoltage() {
+        double result = Double.POSITIVE_INFINITY;
+        for (VoltageSensor sensor : hardwareMap.voltageSensor) {
+            double voltage = sensor.getVoltage();
+            if (voltage > 0) {
+                result = Math.min(result, voltage);
+            }
+        }
+        return result;
+    }
 }
