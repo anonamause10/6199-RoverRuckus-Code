@@ -26,7 +26,7 @@ import java.util.Locale;
 /**
  * Created by isong on 10/17/18.
  */
-@Autonomous(name="GOLD Autonomous ROVERRUCKUS")
+@Autonomous(name="GOLD Autonomous RR")
 public class AutonomousRoverRuckusG extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();

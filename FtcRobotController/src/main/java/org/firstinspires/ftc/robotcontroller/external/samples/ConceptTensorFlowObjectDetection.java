@@ -36,8 +36,8 @@ import java.util.List;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+//import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+//import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 /**
  * This 2018-2019 OpMode illustrates the basics of using the TensorFlow Object Detection API to
@@ -77,16 +77,16 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
     private VuforiaLocalizer vuforia;
 
     /**
-     * {@link #tfod} is the variable we will use to store our instance of the Tensor Flow Object
+     * {@link #} is the variable we will use to store our instance of the Tensor Flow Object
      * Detection engine.
      */
-    private TFObjectDetector tfod;
+    //private TFObjectDetector tfod;
 
     @Override
     public void runOpMode() {
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
-        initVuforia();
+       /** initVuforia();
 
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
             initTfod();
@@ -94,13 +94,13 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
             telemetry.addData("Sorry!", "This device is not compatible with TFOD");
         }
 
-        /** Wait for the game to begin */
+        /** Wait for the game to begin
         telemetry.addData(">", "Press Play to start tracking");
         telemetry.update();
         waitForStart();
 
         if (opModeIsActive()) {
-            /** Activate Tensor Flow Object Detection. */
+            /** Activate Tensor Flow Object Detection.
             if (tfod != null) {
                 tfod.activate();
             }
@@ -144,6 +144,7 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
         if (tfod != null) {
             tfod.shutdown();
         }
+        */
     }
 
     /**
@@ -168,10 +169,11 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
      * Initialize the Tensor Flow Object Detection engine.
      */
     private void initTfod() {
-        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+       /** int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
             "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+        */
     }
 }

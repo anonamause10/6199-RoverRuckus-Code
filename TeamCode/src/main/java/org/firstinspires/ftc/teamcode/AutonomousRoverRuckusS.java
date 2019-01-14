@@ -24,7 +24,7 @@ import java.util.Locale;
 /**
  * Created by isong on 11/29/18.
  */
-@Autonomous(name = "SILVER AUTONOMOUS ROVER RUCKUS")
+@Autonomous(name = "SILVER AUTONOMOUS RR")
 
 public class AutonomousRoverRuckusS extends LinearOpMode{
     // Declare OpMode members.
