@@ -186,6 +186,13 @@ public class TimerTester extends LinearOpMode {
 
                 backRightDrive.setPower(-0.5*scale);
                 sleep((long)(numbers[0]));
+                frontLeftDrive.setPower(0);
+
+                frontRightDrive.setPower(0);
+
+                backLeftDrive.setPower(0);
+
+                backRightDrive.setPower(0);
             }
             if(gamepad1.dpad_up && !dUpPrev){
                 frontLeftDrive.setPower(0.5*scale);
@@ -196,6 +203,13 @@ public class TimerTester extends LinearOpMode {
 
                 backRightDrive.setPower(0.5*scale);
                 sleep((long)(numbers[0]));
+                frontLeftDrive.setPower(0);
+
+                frontRightDrive.setPower(0);
+
+                backLeftDrive.setPower(0);
+
+                backRightDrive.setPower(0);
             }
             if(gamepad1.dpad_left && !dLeftPrev){
                 frontLeftDrive.setPower(0.8*scale);
@@ -206,6 +220,13 @@ public class TimerTester extends LinearOpMode {
 
                 backRightDrive.setPower(0.8*scale);
                 sleep((long)(numbers[0]));
+                frontLeftDrive.setPower(0);
+
+                frontRightDrive.setPower(0);
+
+                backLeftDrive.setPower(0);
+
+                backRightDrive.setPower(0);
             }
             if(gamepad1.dpad_right && !dRightPrev){
                 frontLeftDrive.setPower(-0.8*scale);
@@ -216,6 +237,13 @@ public class TimerTester extends LinearOpMode {
 
                 backRightDrive.setPower(-0.8*scale);
                 sleep((long)(numbers[0]));
+                frontLeftDrive.setPower(0);
+
+                frontRightDrive.setPower(0);
+
+                backLeftDrive.setPower(0);
+
+                backRightDrive.setPower(0);
             }
             if(gamepad1.x && !xPrev){
                 frontLeftDrive.setPower(0.5*scale);
@@ -226,6 +254,13 @@ public class TimerTester extends LinearOpMode {
 
                 backRightDrive.setPower(-0.5*scale);
                 sleep((long)(numbers[0]));
+                frontLeftDrive.setPower(0);
+
+                frontRightDrive.setPower(0);
+
+                backLeftDrive.setPower(0);
+
+                backRightDrive.setPower(0);
             }
             if(gamepad1.y && !yPrev){
                 frontLeftDrive.setPower(-0.5*scale);
@@ -236,6 +271,13 @@ public class TimerTester extends LinearOpMode {
 
                 backRightDrive.setPower(0.5*scale);
                 sleep((long)(numbers[0]));
+                frontLeftDrive.setPower(0);
+
+                frontRightDrive.setPower(0);
+
+                backLeftDrive.setPower(0);
+
+                backRightDrive.setPower(0);
             }
             if(gamepad2.dpad_up){
                 objTurn++;
@@ -278,6 +320,10 @@ public class TimerTester extends LinearOpMode {
                         backRightDrive.setPower(-0.4);
                     }
                 }
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
             }else if(gamepad2.dpad_left && !dLeftPrev2) {
                     boolean turned = false;
                     double vuAng = objTurn;
@@ -314,6 +360,10 @@ public class TimerTester extends LinearOpMode {
                             backRightDrive.setPower(0.4);
                         }
                     }
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
 
             }
             if(gamepad2.y){
@@ -360,6 +410,16 @@ public class TimerTester extends LinearOpMode {
                 linAct.setPower(1);
                 sleep((long)(1500));
                 linAct.setPower(0);
+                frontLeftDrive.setPower(-0.4*scale);
+                frontRightDrive.setPower(0.4*scale);
+                backLeftDrive.setPower(-0.4*scale);
+                backRightDrive.setPower(0.4*scale);
+
+                sleep((long)(500));
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
 
             }
 
@@ -386,10 +446,10 @@ public class TimerTester extends LinearOpMode {
             telemetry.addData("Angle", ang);
             telemetry.addData("cDown", cDown);
             telemetry.addLine()
-                    .addData("a", "%.3f", colorSensor.alpha())
-                    .addData("r", "%.3f", colorSensor.red())
-                    .addData("g", "%.3f", colorSensor.green())
-                    .addData("b", "%.3f", colorSensor.blue());
+                    .addData("a", colorSensor.alpha())
+                    .addData("r", colorSensor.red())
+                    .addData("g", colorSensor.green())
+                    .addData("b", colorSensor.blue());
             telemetry.update();
         }
     }
