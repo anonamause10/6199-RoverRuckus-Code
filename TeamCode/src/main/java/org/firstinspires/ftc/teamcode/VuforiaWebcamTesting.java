@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.dogecv;
+package org.firstinspires.ftc.teamcode;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
@@ -72,7 +72,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Vuforia Webcam Testing", group="DogeCV")
+@TeleOp(name="Vuforia Web Testing", group="DogeCV")
 
 public class VuforiaWebcamTesting extends OpMode
 {
@@ -191,6 +191,11 @@ public class VuforiaWebcamTesting extends OpMode
 
     @Override
     public void loop() {
+        if(detector.isFound()){
+        telemetry.addData("Gold Found X:", detector.getXPosition());
+    }else{
+        telemetry.addData("No!", detector.isFound());
+    }
         targetVisible = false;
         for (VuforiaTrackable trackable : allTrackables) {
             if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
@@ -206,6 +211,7 @@ public class VuforiaWebcamTesting extends OpMode
                 break;
             }
         }
+
 
         // Provide feedback as to where the robot is located (if we know).
         if (targetVisible) {

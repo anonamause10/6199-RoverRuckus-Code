@@ -76,7 +76,7 @@ public class DoublePully extends LinearOpMode{
                 if(turn.getMode().equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER))
                 {
                     if( -gamepad2.left_stick_y>0.2 || -gamepad2.left_stick_y<-0.2){
-                        turn.setPower(0.75*0.6*(-gamepad2.left_stick_y));
+                        turn.setPower(0.75*0.9*(-gamepad2.left_stick_y));
                     }else{
                         turn.setPower(0);
                         turn.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
