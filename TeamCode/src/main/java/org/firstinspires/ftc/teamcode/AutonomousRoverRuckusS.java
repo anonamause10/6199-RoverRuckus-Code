@@ -253,4 +253,8 @@ public class AutonomousRoverRuckusS extends LinearOpMode{
         }
         return result;
     }
+    private void Sampling(ElapsedTime run){
+        double x = run.seconds();
+
+    }
 }

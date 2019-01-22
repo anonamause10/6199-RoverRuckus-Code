@@ -5,6 +5,7 @@ import android.util.Log;
 import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.DogeCVDetector;
 import com.disnodeteam.dogecv.filters.DogeCVColorFilter;
+import com.disnodeteam.dogecv.filters.HSVColorFilter;
 import com.disnodeteam.dogecv.filters.LeviColorFilter;
 import com.disnodeteam.dogecv.scoring.MaxAreaScorer;
 import com.disnodeteam.dogecv.scoring.PerfectAreaScorer;
@@ -42,7 +43,7 @@ public class GoldDetector extends DogeCVDetector {
     public DogeCV.AreaScoringMethod areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Setting to decide to use MaxAreaScorer or PerfectAreaScorer
 
     //Create the default filters and scorers
-    public DogeCVColorFilter yellowFilter      = new LeviColorFilter(LeviColorFilter.ColorPreset.YELLOW); //Default Yellow filter
+    public DogeCVColorFilter yellowFilter      = new HSVColorFilter(new Scalar(255,200,70), new Scalar(100,100,100)); //Default Yellow filter
 
     public RatioScorer       ratioScorer       = new RatioScorer(1.0, 3);          // Used to find perfect squares
     public MaxAreaScorer     maxAreaScorer     = new MaxAreaScorer( 0.01);                    // Used to find largest objects
