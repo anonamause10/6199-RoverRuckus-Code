@@ -220,23 +220,22 @@ public class SamplingAuto extends LinearOpMode
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
 
-
+        frontLeftDrive.setPower(0.2*scale);
+        frontRightDrive.setPower(-0.2*scale);
+        backLeftDrive.setPower(0.2*scale);
+        backRightDrive.setPower(-0.2*scale);
         boolean searching = true;
         while(searching) {
-            frontLeftDrive.setPower(0.3*scale);
-            frontRightDrive.setPower(-0.3*scale);
-            backLeftDrive.setPower(0.3*scale);
-            backRightDrive.setPower(-0.3*scale);
             if (detector.isFound()) {
                 telemetry.addData("Gold Found X:", detector.getXPosition());
             } else {
                 telemetry.addData("No!", detector.isFound());
             }
-            if(detector.isFound()){
-                if(detector.getXPosition()>=200&&detector.getXPosition()<=600){
-                    searching = false;
-                }
+
+            if(detector.getXPosition()>=200&&detector.getXPosition()<=600){
+                searching = false;
             }
+
             if(runtime.seconds()>15){
                 searching = false;
             }
@@ -251,6 +250,7 @@ public class SamplingAuto extends LinearOpMode
         frontRightDrive.setPower(0);
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
+        sleep(20);
         frontLeftDrive.setPower(-0.3*scale);
         frontRightDrive.setPower(-0.3*scale);
         backLeftDrive.setPower(-0.3*scale);
@@ -267,7 +267,7 @@ public class SamplingAuto extends LinearOpMode
         backLeftDrive.setPower(0);
         backRightDrive.setPower(0);
 
-
+        detector.disable();
 
     }
 
