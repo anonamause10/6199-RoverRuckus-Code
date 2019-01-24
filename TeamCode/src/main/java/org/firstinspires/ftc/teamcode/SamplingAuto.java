@@ -294,7 +294,7 @@ public class SamplingAuto extends LinearOpMode
 
                     backRightDrive.setPower(0.5*scale);
 
-                    sleep((long)(350*scale));
+                    sleep((long)(400*scale));
 
                     if(pos==0){
 
@@ -328,10 +328,10 @@ public class SamplingAuto extends LinearOpMode
                                 backRightDrive.setPower(0.2*scale);
                             }
                             if (ang < 0) {
-                                frontLeftDrive.setPower(-0.3*scale);
-                                frontRightDrive.setPower(0.3*scale);
-                                backLeftDrive.setPower(-0.3*scale);
-                                backRightDrive.setPower(0.3*scale);
+                                frontLeftDrive.setPower(0.3*scale);
+                                frontRightDrive.setPower(-0.3*scale);
+                                backLeftDrive.setPower(0.3*scale);
+                                backRightDrive.setPower(-0.3*scale);
                             }
                         }
                         frontLeftDrive.setPower(0);
