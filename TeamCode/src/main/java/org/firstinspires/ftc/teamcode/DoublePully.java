@@ -109,11 +109,11 @@ public class DoublePully extends LinearOpMode{
                 backPrev = gamepad2.back;
 
                 if(gamepad2.a){
-                    pully.setPower(0.75);
-                    pull2.setPower(0.2);
+                    pully.setPower(1);
+                    pull2.setPower(0.28);
                 }else if(gamepad2.b){
-                    pull2.setPower(-0.75);
-                    pully.setPower(-0.2);
+                    pull2.setPower(-1);
+                    pully.setPower(-0.28);
                 }else{
                     pully.setPower(0);
                     pull2.setPower(0);
