@@ -348,12 +348,12 @@ public class SamplingAuto extends LinearOpMode
                         telemetry.addData("TurnTo", objTurn);
 
                         telemetry.update();
-                        if (ang < vuAng - 1 && ang > 0) {
+                        if (ang < vuAng - 1 && ang >= 0) {
                             frontLeftDrive.setPower(0.3*scale);
                             frontRightDrive.setPower(-0.3*scale);
                             backLeftDrive.setPower(0.3*scale);
                             backRightDrive.setPower(-0.3*scale);
-                        } else if (ang > vuAng + 1 && ang > 0) {
+                        } else if (ang > vuAng + 1 && ang >= 0) {
                             frontLeftDrive.setPower(-0.3*scale);
                             frontRightDrive.setPower(0.3*scale);
                             backLeftDrive.setPower(-0.3*scale);
@@ -385,12 +385,12 @@ public class SamplingAuto extends LinearOpMode
                         telemetry.addData("TurnTo", objTurn);
 
                         telemetry.update();
-                        if (ang < vuAng - 1 && ang > 0) {
+                        if (ang < vuAng - 1 && ang <= 0) {
                             frontLeftDrive.setPower(0.3*scale);
                             frontRightDrive.setPower(-0.3*scale);
                             backLeftDrive.setPower(0.3*scale);
                             backRightDrive.setPower(-0.3*scale);
-                        } else if (ang > vuAng + 1 && ang > 0) {
+                        } else if (ang > vuAng + 1 && ang <= 0) {
                             frontLeftDrive.setPower(-0.3*scale);
                             frontRightDrive.setPower(0.3*scale);
                             backLeftDrive.setPower(-0.3*scale);
@@ -456,12 +456,12 @@ public class SamplingAuto extends LinearOpMode
                     telemetry.addData("TurnTo", objTurn);
 
                     telemetry.update();
-                    if (ang < vuAng - 1 && ang > 0) {
+                    if (ang < vuAng - 1 && ang >= 0) {
                         frontLeftDrive.setPower(0.3*scale);
                         frontRightDrive.setPower(-0.3*scale);
                         backLeftDrive.setPower(0.3*scale);
                         backRightDrive.setPower(-0.3*scale);
-                    } else if (ang > vuAng + 1 && ang > 0) {
+                    } else if (ang > vuAng + 1 && ang >= 0) {
                         frontLeftDrive.setPower(-0.3*scale);
                         frontRightDrive.setPower(0.3*scale);
                         backLeftDrive.setPower(-0.3*scale);
@@ -574,7 +574,7 @@ public class SamplingAuto extends LinearOpMode
                 backLeftDrive.setPower(0.5*scale);
 
                 backRightDrive.setPower(0.5*scale);
-                sleep((int)numbers[4]/100);
+                sleep((long)numbers[4]);
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
