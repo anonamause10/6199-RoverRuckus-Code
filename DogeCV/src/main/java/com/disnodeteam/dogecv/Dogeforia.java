@@ -113,29 +113,31 @@ public class Dogeforia extends VuforiaLocalizerImpl {
         if(frame != null ){
 
             bitmap = convertFrameToBitmap(frame);
+            if(bitmap!=null) {
+                inputMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC1);
+                Utils.bitmapToMat(bitmap, inputMat);
 
-            inputMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC1);
-            Utils.bitmapToMat(bitmap,inputMat);
+                outMat = detector.processFrame(inputMat, null);
 
-            outMat = detector.processFrame(inputMat, null);
+                if (showDebug) {
+                    if (loadedTrackableSets != null && loadedTrackableSets.size() > 0) {
+                        VuforiaTrackablesImpl trackables = loadedTrackableSets.get(0);
+                        int count = 0;
+                        for (VuforiaTrackable trackable : trackables) {
+                            if (trackable == null || ((VuforiaTrackableDefaultListener) trackable.getListener()) == null) {
+                                continue;
+                            }
+                            if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                                Imgproc.putText(outMat, "Vuforia: " + trackable.getName(), new Point(10, 50 * count + 50), 0, 2, new Scalar(0, 255, 0), 3);
+                                count++;
+                            }
 
-            if(showDebug){
-                if(loadedTrackableSets !=null && loadedTrackableSets.size() > 0) {
-                    VuforiaTrackablesImpl trackables = loadedTrackableSets.get(0);
-                    int count = 0;
-                    for(VuforiaTrackable trackable : trackables){
-                        if(trackable == null || ((VuforiaTrackableDefaultListener)trackable.getListener()) == null){
-                            continue;
                         }
-                        if(((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()){
-                            Imgproc.putText(outMat,"Vuforia: " + trackable.getName(), new Point(10,50 * count + 50),0,2,new Scalar(0,255,0),3);
-                            count++;
-                        }
+                    }
 
-                    }   
                 }
-                
             }
+
 
 
             if(!outMat.empty() ){
@@ -157,6 +159,7 @@ public class Dogeforia extends VuforiaLocalizerImpl {
                         displayView.invalidate();
                     }
                 });
+
 
             }else{
                 Log.w("DogeCV", "MAT BITMAP MISMATCH OR EMPTY ERROR");

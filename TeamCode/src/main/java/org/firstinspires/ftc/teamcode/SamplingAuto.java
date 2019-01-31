@@ -114,7 +114,7 @@ public class SamplingAuto extends LinearOpMode
     private int pos = 1; /** 0 - LEFT, 1 - MIDDLE, 2 - RIGHT
     */
 
-    private double[] numbers = {1300, 13500, 1252, 13500, 895, 2372, 13500};
+    private double[] numbers = {1300, 9000, 1312, 252, 755, 2372, 13500};
     private boolean aPrev = false;
     private boolean xPrev = false;
     private boolean dUpPrev = false;
@@ -261,18 +261,18 @@ public class SamplingAuto extends LinearOpMode
             telemetry.addData("POSITION:", "right");
             pos = 2;
         }
-
-
         telemetry.update();
+        detector.disable();
         while (opModeIsActive()) {
-            if(gamepad1.dpad_right){
+            if(gamepad2.dpad_right){
                 pos = 2;
-            }else if(gamepad1.dpad_left){
+            }else if(gamepad2.dpad_left){
                 pos = 0;
-            }else if(gamepad1.dpad_up){
+            }else if(gamepad2.dpad_up){
                 pos = 1;
             }
             if(gamepad1.a) {
+                detector.enable();
                 if (detector.isFound()) {
                     telemetry.addData("Gold Found X:", detector.getXPosition());
                     if (detector.getXPosition() <= 300) {
@@ -282,14 +282,16 @@ public class SamplingAuto extends LinearOpMode
                     } else if (detector.getXPosition() > 300) {
                         telemetry.addData("POSITION:", "middle");
                         pos = 1;
+                        numbers[0]/=1.5;
                     }
                 } else {
                     telemetry.addData("POSITION:", "right");
                     pos = 2;
                 }
                 telemetry.update();
+                detector.disable();
                 linAct.setPower(-1);
-                sleep((int)numbers[6]);
+                sleep((int)8000);
                 linAct.setPower(0);
                 frontLeftDrive.setPower(0.4);
                 frontRightDrive.setPower(-0.4);
@@ -335,79 +337,9 @@ public class SamplingAuto extends LinearOpMode
                 boolean turned = false;
                 double vuAng = objTurn;
                 if (pos == 0) {
-                    turned = false;
-                    objTurn = 45;
-                    vuAng = objTurn;
-                    while (!turned && opModeIsActive()) {
-                        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                        gravity = imu.getGravity();
-                        angle = formatAngle(angles.angleUnit, angles.firstAngle);
-                        ang = Double.parseDouble(angle);
-                        turned = (ang >= vuAng - 0.5) && (ang <= vuAng + 0.5);
-                        telemetry.addData("Angle", ang);
-                        telemetry.addData("TurnTo", objTurn);
-
-                        telemetry.update();
-                        if (ang < vuAng - 1 && ang >= 0) {
-                            frontLeftDrive.setPower(0.3*scale);
-                            frontRightDrive.setPower(-0.3*scale);
-                            backLeftDrive.setPower(0.3*scale);
-                            backRightDrive.setPower(-0.3*scale);
-                        } else if (ang > vuAng + 1 && ang >= 0) {
-                            frontLeftDrive.setPower(-0.3*scale);
-                            frontRightDrive.setPower(0.3*scale);
-                            backLeftDrive.setPower(-0.3*scale);
-                            backRightDrive.setPower(0.3*scale);
-                        } else if (Math.abs(vuAng - ang) < 1) {
-                            frontLeftDrive.setPower(0.2*scale);
-                            frontRightDrive.setPower(-0.2*scale);
-                            backLeftDrive.setPower(0.2*scale);
-                            backRightDrive.setPower(-0.2*scale);
-                        }
-                        if (ang < 0) {
-                            frontLeftDrive.setPower(0.3*scale);
-                            frontRightDrive.setPower(-0.3*scale);
-                            backLeftDrive.setPower(0.3*scale);
-                            backRightDrive.setPower(-0.3*scale);
-                        }
-                    }
+                    turn(45, angle, ang);
                 } else if (pos == 2) {
-                    turned = false;
-                    objTurn = -45;
-                    vuAng = objTurn;
-                    while (!turned && opModeIsActive()) {
-                        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                        gravity = imu.getGravity();
-                        angle = formatAngle(angles.angleUnit, angles.firstAngle);
-                        ang = Double.parseDouble(angle);
-                        turned = (ang >= vuAng - 0.5) && (ang <= vuAng + 0.5);
-                        telemetry.addData("Angle", ang);
-                        telemetry.addData("TurnTo", objTurn);
-
-                        telemetry.update();
-                        if (ang < vuAng - 1 && ang <= 0) {
-                            frontLeftDrive.setPower(0.3*scale);
-                            frontRightDrive.setPower(-0.3*scale);
-                            backLeftDrive.setPower(0.3*scale);
-                            backRightDrive.setPower(-0.3*scale);
-                        } else if (ang > vuAng + 1 && ang <= 0) {
-                            frontLeftDrive.setPower(-0.3*scale);
-                            frontRightDrive.setPower(0.3*scale);
-                            backLeftDrive.setPower(-0.3*scale);
-                            backRightDrive.setPower(0.3*scale);
-                        } else if (Math.abs(vuAng - ang) < 1) {
-                            frontLeftDrive.setPower(-0.2*scale);
-                            frontRightDrive.setPower(0.2*scale);
-                            backLeftDrive.setPower(-0.2*scale);
-                            backRightDrive.setPower(0.2*scale);
-                        }
-                        if (ang > 0) {
-                            frontLeftDrive.setPower(-0.3*scale);
-                            frontRightDrive.setPower(0.3*scale);
-                            backLeftDrive.setPower(-0.3*scale);
-                            backRightDrive.setPower(0.3*scale);
-                        }
-                    }
+                    negTurn(-45, angle, ang);
                 }
 
                 frontLeftDrive.setPower(0.3 * scale);
@@ -442,43 +374,13 @@ public class SamplingAuto extends LinearOpMode
                 backLeftDrive.setPower(0);
 
                 backRightDrive.setPower(0);
-
-                turned = false;
-                objTurn = 85;
-                vuAng = objTurn;
-                while (!turned && opModeIsActive()) {
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                    gravity = imu.getGravity();
-                    angle = formatAngle(angles.angleUnit, angles.firstAngle);
-                    ang = Double.parseDouble(angle);
-                    turned = (ang >= vuAng - 0.5) && (ang <= vuAng + 0.5);
-                    telemetry.addData("Angle", ang);
-                    telemetry.addData("TurnTo", objTurn);
-
-                    telemetry.update();
-                    if (ang < vuAng - 1 && ang >= 0) {
-                        frontLeftDrive.setPower(0.3*scale);
-                        frontRightDrive.setPower(-0.3*scale);
-                        backLeftDrive.setPower(0.3*scale);
-                        backRightDrive.setPower(-0.3*scale);
-                    } else if (ang > vuAng + 1 && ang >= 0) {
-                        frontLeftDrive.setPower(-0.3*scale);
-                        frontRightDrive.setPower(0.3*scale);
-                        backLeftDrive.setPower(-0.3*scale);
-                        backRightDrive.setPower(0.3*scale);
-                    } else if (Math.abs(vuAng - ang) < 1) {
-                        frontLeftDrive.setPower(0.2*scale);
-                        frontRightDrive.setPower(-0.2*scale);
-                        backLeftDrive.setPower(0.2*scale);
-                        backRightDrive.setPower(-0.2*scale);
-                    }
-                    if (ang < 0) {
-                        frontLeftDrive.setPower(0.3*scale);
-                        frontRightDrive.setPower(-0.3*scale);
-                        backLeftDrive.setPower(0.3*scale);
-                        backRightDrive.setPower(-0.3*scale);
-                    }
+                if(pos==1){
+                    numbers[0]*=1.5;
                 }
+                turned = false;
+                turn(numbers[1]/100,angle,ang);
+                turn(numbers[1]/100,angle,ang);
+                turn(numbers[1]/100,angle,ang);
                 frontLeftDrive.setPower(0.5*scale);
 
                 frontRightDrive.setPower(0.5*scale);
@@ -492,80 +394,18 @@ public class SamplingAuto extends LinearOpMode
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
+                frontLeftDrive.setPower(0.5*scale);
 
-                objTurn = numbers[1]/100;
-                vuAng = objTurn;
-                turned = false;
-                while (!turned && opModeIsActive()) {
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                    gravity = imu.getGravity();
-                    angle = formatAngle(angles.angleUnit, angles.firstAngle);
-                    ang = Double.parseDouble(angle);
-                    turned = (ang >= vuAng - 0.5) && (ang <= vuAng + 0.5);
-                    telemetry.addData("Angle", ang);
-                    telemetry.addData("TurnTo", objTurn);
+                frontRightDrive.setPower(-0.5*scale);
 
-                    telemetry.update();
-                    if (ang < vuAng - 1 && ang > 0) {
-                        frontLeftDrive.setPower(0.3*scale);
-                        frontRightDrive.setPower(-0.3*scale);
-                        backLeftDrive.setPower(0.3*scale);
-                        backRightDrive.setPower(-0.3*scale);
-                    } else if (ang > vuAng + 1 && ang > 0) {
-                        frontLeftDrive.setPower(-0.3*scale);
-                        frontRightDrive.setPower(0.3*scale);
-                        backLeftDrive.setPower(-0.3*scale);
-                        backRightDrive.setPower(0.3*scale);
-                    } else if (Math.abs(vuAng - ang) < 1) {
-                        frontLeftDrive.setPower(0.2*scale);
-                        frontRightDrive.setPower(-0.2*scale);
-                        backLeftDrive.setPower(0.2*scale);
-                        backRightDrive.setPower(-0.2*scale);
-                    }
-                    if (ang < 0) {
-                        frontLeftDrive.setPower(0.3*scale);
-                        frontRightDrive.setPower(-0.3*scale);
-                        backLeftDrive.setPower(0.3*scale);
-                        backRightDrive.setPower(-0.3*scale);
-                    }
-                }
-                objTurn = numbers[3]/100;
-                vuAng = objTurn;
-                turned = false;
-                while (!turned && opModeIsActive()) {
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                    gravity = imu.getGravity();
-                    angle = formatAngle(angles.angleUnit, angles.firstAngle);
-                    ang = Double.parseDouble(angle);
-                    turned = (ang >= vuAng - 0.5) && (ang <= vuAng + 0.5);
-                    telemetry.addData("Angle", ang);
-                    telemetry.addData("TurnTo", objTurn);
+                backLeftDrive.setPower(0.5*scale);
 
-                    telemetry.update();
-                    if (ang < vuAng - 1 && ang > 0) {
-                        frontLeftDrive.setPower(0.3*scale);
-                        frontRightDrive.setPower(-0.3*scale);
-                        backLeftDrive.setPower(0.3*scale);
-                        backRightDrive.setPower(-0.3*scale);
-                    } else if (ang > vuAng + 1 && ang > 0) {
-                        frontLeftDrive.setPower(-0.3*scale);
-                        frontRightDrive.setPower(0.3*scale);
-                        backLeftDrive.setPower(-0.3*scale);
-                        backRightDrive.setPower(0.3*scale);
-                    } else if (Math.abs(vuAng - ang) < 1) {
-                        frontLeftDrive.setPower(0.2*scale);
-                        frontRightDrive.setPower(-0.2*scale);
-                        backLeftDrive.setPower(0.2*scale);
-                        backRightDrive.setPower(-0.2*scale);
-                    }
-                    if (ang < 0) {
-                        frontLeftDrive.setPower(0.3*scale);
-                        frontRightDrive.setPower(-0.3*scale);
-                        backLeftDrive.setPower(0.3*scale);
-                        backRightDrive.setPower(-0.3*scale);
-                    }
-                }
-
+                backRightDrive.setPower(-0.5*scale);
+                sleep((long)(numbers[3]));
+                frontLeftDrive.setPower(0);
+                frontRightDrive.setPower(0);
+                backLeftDrive.setPower(0);
+                backRightDrive.setPower(0);
 
                 frontLeftDrive.setPower(0.5*scale);
 
@@ -583,42 +423,6 @@ public class SamplingAuto extends LinearOpMode
                 marker.setPosition(0.7);
 
                 sleep(900);
-                objTurn = numbers[6]/100;
-                vuAng = objTurn;
-                turned = false;
-                while (!turned && opModeIsActive()) {
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                    gravity = imu.getGravity();
-                    angle = formatAngle(angles.angleUnit, angles.firstAngle);
-                    ang = Double.parseDouble(angle);
-                    turned = (ang >= vuAng - 0.5) && (ang <= vuAng + 0.5);
-                    telemetry.addData("Angle", ang);
-                    telemetry.addData("TurnTo", objTurn);
-
-                    telemetry.update();
-                    if (ang < vuAng - 1 && ang > 0) {
-                        frontLeftDrive.setPower(0.3*scale);
-                        frontRightDrive.setPower(-0.3*scale);
-                        backLeftDrive.setPower(0.3*scale);
-                        backRightDrive.setPower(-0.3*scale);
-                    } else if (ang > vuAng + 1 && ang > 0) {
-                        frontLeftDrive.setPower(-0.3*scale);
-                        frontRightDrive.setPower(0.3*scale);
-                        backLeftDrive.setPower(-0.3*scale);
-                        backRightDrive.setPower(0.3*scale);
-                    } else if (Math.abs(vuAng - ang) < 1) {
-                        frontLeftDrive.setPower(0.2*scale);
-                        frontRightDrive.setPower(-0.2*scale);
-                        backLeftDrive.setPower(0.2*scale);
-                        backRightDrive.setPower(-0.2*scale);
-                    }
-                    if (ang < 0) {
-                        frontLeftDrive.setPower(0.3*scale);
-                        frontRightDrive.setPower(-0.3*scale);
-                        backLeftDrive.setPower(0.3*scale);
-                        backRightDrive.setPower(-0.3*scale);
-                    }
-                }
 
                 frontLeftDrive.setPower(-0.4*scale);
 
@@ -635,7 +439,7 @@ public class SamplingAuto extends LinearOpMode
                 backLeftDrive.setPower(0);
 
                 backRightDrive.setPower(0);
-
+                detector.disable();
             }
             if(gamepad1.right_bumper&&!rbPrev){
                 increment += 25;
@@ -695,6 +499,82 @@ public class SamplingAuto extends LinearOpMode
             }
         }
         return result;
+    }
+    void turn(double tun, String angle, double ang){
+        objTurn = tun;
+        double vuAng = objTurn;
+        boolean turned = false;
+        while (!turned && opModeIsActive()) {
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            gravity = imu.getGravity();
+            angle = formatAngle(angles.angleUnit, angles.firstAngle);
+            ang = Double.parseDouble(angle);
+            turned = (ang >= vuAng - 0.5) && (ang <= vuAng + 0.5);
+            telemetry.addData("Angle", ang);
+            telemetry.addData("TurnTo", objTurn);
+
+            telemetry.update();
+            if (ang < vuAng - 1 && ang >= 0) {
+                frontLeftDrive.setPower(0.25*scale);
+                frontRightDrive.setPower(-0.25*scale);
+                backLeftDrive.setPower(0.25*scale);
+                backRightDrive.setPower(-0.25*scale);
+            } else if (ang > vuAng + 1 && ang >= 0) {
+                frontLeftDrive.setPower(-0.25*scale);
+                frontRightDrive.setPower(0.25*scale);
+                backLeftDrive.setPower(-0.25*scale);
+                backRightDrive.setPower(0.25*scale);
+            } else if (Math.abs(vuAng - ang) < 1) {
+                frontLeftDrive.setPower(0.25*scale);
+                frontRightDrive.setPower(-0.25*scale);
+                backLeftDrive.setPower(0.25*scale);
+                backRightDrive.setPower(-0.25*scale);
+            }
+            if (ang < 0) {
+                frontLeftDrive.setPower(0.3*scale);
+                frontRightDrive.setPower(-0.3*scale);
+                backLeftDrive.setPower(0.3*scale);
+                backRightDrive.setPower(-0.3*scale);
+            }
+        }
+    }
+    void negTurn(double tun, String angle, double ang){
+        objTurn = tun;
+        double vuAng = objTurn;
+        boolean turned = false;
+        while (!turned && opModeIsActive()) {
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            gravity = imu.getGravity();
+            angle = formatAngle(angles.angleUnit, angles.firstAngle);
+            ang = Double.parseDouble(angle);
+            turned = (ang >= vuAng - 0.5) && (ang <= vuAng + 0.5);
+            telemetry.addData("Angle", ang);
+            telemetry.addData("TurnTo", objTurn);
+
+            telemetry.update();
+            if (ang < vuAng - 1 && ang <= 0) {
+                frontLeftDrive.setPower(0.3*scale);
+                frontRightDrive.setPower(-0.3*scale);
+                backLeftDrive.setPower(0.3*scale);
+                backRightDrive.setPower(-0.3*scale);
+            } else if (ang > vuAng + 1 && ang <= 0) {
+                frontLeftDrive.setPower(-0.3*scale);
+                frontRightDrive.setPower(0.3*scale);
+                backLeftDrive.setPower(-0.3*scale);
+                backRightDrive.setPower(0.3*scale);
+            } else if (Math.abs(vuAng - ang) < 1) {
+                frontLeftDrive.setPower(-0.2*scale);
+                frontRightDrive.setPower(0.2*scale);
+                backLeftDrive.setPower(-0.2*scale);
+                backRightDrive.setPower(0.2*scale);
+            }
+            if (ang > 0) {
+                frontLeftDrive.setPower(-0.3*scale);
+                frontRightDrive.setPower(0.3*scale);
+                backLeftDrive.setPower(-0.3*scale);
+                backRightDrive.setPower(0.3*scale);
+            }
+        }
     }
 
 

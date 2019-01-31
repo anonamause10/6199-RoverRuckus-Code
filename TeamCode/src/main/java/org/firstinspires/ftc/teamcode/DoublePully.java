@@ -33,7 +33,7 @@ public class DoublePully extends LinearOpMode{
         private boolean yPrev = false;
         private boolean backPrev =false;
         private boolean rbPrev = false;
-        private double spinPos = 0.36;
+        private double spinPos = 0.9;
 
         private DcMotor linAct = null;
 
