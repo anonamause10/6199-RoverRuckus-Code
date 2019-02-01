@@ -114,7 +114,7 @@ public class AutonomousRoverRuckusS extends LinearOpMode
     private int pos = 1; /** 0 - LEFT, 1 - MIDDLE, 2 - RIGHT
  */
 
-private double[] numbers = {1300, 9000, 1312, 242, 755, 2372, 13500};
+private double[] numbers = {1300, 9000, 1360, 250, 755, 2682, 13500};
     private boolean aPrev = false;
     private boolean xPrev = false;
     private boolean dUpPrev = false;
@@ -266,7 +266,7 @@ private double[] numbers = {1300, 9000, 1312, 242, 755, 2372, 13500};
                 telemetry.update();
                 detector.disable();
                 linAct.setPower(-1);
-                sleep((int)8000);
+                sleep((int)7900);
                 linAct.setPower(0);
                 frontLeftDrive.setPower(0.4);
                 frontRightDrive.setPower(-0.4);
@@ -281,7 +281,7 @@ private double[] numbers = {1300, 9000, 1312, 242, 755, 2372, 13500};
                 backRightDrive.setPower(0);
 
                 linAct.setPower(1);
-                sleep(1500);
+                sleep(1700);
                 linAct.setPower(0);
                 frontLeftDrive.setPower(-0.4);
                 frontRightDrive.setPower(0.4);
@@ -314,7 +314,7 @@ private double[] numbers = {1300, 9000, 1312, 242, 755, 2372, 13500};
                 if (pos == 0) {
                     turn(45, angle, ang);
                 } else if (pos == 2) {
-                    negTurn(-45, angle, ang);
+                    negTurn(-55, angle, ang);
                 }
 
                 frontLeftDrive.setPower(0.3 * scale);
@@ -354,8 +354,6 @@ private double[] numbers = {1300, 9000, 1312, 242, 755, 2372, 13500};
                 }
                 turned = false;
                 turn(numbers[1]/100,angle,ang);
-                turn(numbers[1]/100,angle,ang);
-                turn(numbers[1]/100,angle,ang);
                 frontLeftDrive.setPower(0.5*scale);
 
                 frontRightDrive.setPower(0.5*scale);
@@ -381,6 +379,31 @@ private double[] numbers = {1300, 9000, 1312, 242, 755, 2372, 13500};
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
+        frontLeftDrive.setPower(0.6*scale);
+
+        frontRightDrive.setPower(-0.6*scale);
+
+        backLeftDrive.setPower(-0.6*scale);
+
+        backRightDrive.setPower(0.6*scale);
+        sleep(600);
+        frontLeftDrive.setPower(-0.6*scale);
+
+        frontRightDrive.setPower(0.6*scale);
+
+        backLeftDrive.setPower(0.6*scale);
+
+        backRightDrive.setPower(-0.6*scale);
+        sleep(100);
+        frontLeftDrive.setPower(-0.5*scale);
+
+        frontRightDrive.setPower(0.5*scale);
+
+        backLeftDrive.setPower(-0.5*scale);
+
+        backRightDrive.setPower(0.5*scale);
+        sleep(50);
+
 
                 frontLeftDrive.setPower(0.5*scale);
 
@@ -396,9 +419,7 @@ private double[] numbers = {1300, 9000, 1312, 242, 755, 2372, 13500};
                 backRightDrive.setPower(0);
 
                 marker.setPosition(0.7);
-
-                sleep(900);
-
+                sleep(300);
                 frontLeftDrive.setPower(-0.4*scale);
 
                 frontRightDrive.setPower(-0.4*scale);
@@ -451,15 +472,15 @@ private double[] numbers = {1300, 9000, 1312, 242, 755, 2372, 13500};
 
             telemetry.update();
             if (ang < vuAng - 1 && ang >= 0) {
-                frontLeftDrive.setPower(0.25*scale);
-                frontRightDrive.setPower(-0.25*scale);
-                backLeftDrive.setPower(0.25*scale);
-                backRightDrive.setPower(-0.25*scale);
+                frontLeftDrive.setPower(0.29*scale);
+                frontRightDrive.setPower(-0.29*scale);
+                backLeftDrive.setPower(0.29*scale);
+                backRightDrive.setPower(-0.29*scale);
             } else if (ang > vuAng + 1 && ang >= 0) {
-                frontLeftDrive.setPower(-0.25*scale);
-                frontRightDrive.setPower(0.25*scale);
-                backLeftDrive.setPower(-0.25*scale);
-                backRightDrive.setPower(0.25*scale);
+                frontLeftDrive.setPower(-0.29*scale);
+                frontRightDrive.setPower(0.29*scale);
+                backLeftDrive.setPower(-0.29*scale);
+                backRightDrive.setPower(0.29*scale);
             } else if (Math.abs(vuAng - ang) < 1) {
                 frontLeftDrive.setPower(0.25*scale);
                 frontRightDrive.setPower(-0.25*scale);

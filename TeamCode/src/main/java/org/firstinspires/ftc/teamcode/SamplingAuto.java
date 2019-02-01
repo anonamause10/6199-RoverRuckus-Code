@@ -406,6 +406,14 @@ public class SamplingAuto extends LinearOpMode
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
+                frontLeftDrive.setPower(-0.5*scale);
+
+                frontRightDrive.setPower(0.5*scale);
+
+                backLeftDrive.setPower(0.5*scale);
+
+                backRightDrive.setPower(-0.5*scale);
+                sleep(500);
 
                 frontLeftDrive.setPower(0.5*scale);
 
