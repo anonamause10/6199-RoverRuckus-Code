@@ -114,7 +114,7 @@ public class AutonomousRoverRuckusS extends LinearOpMode
     private int pos = 1; /** 0 - LEFT, 1 - MIDDLE, 2 - RIGHT
  */
 
-private double[] numbers = {1300, 9000, 1360, 250, 755, 2682, 13500};
+private double[] numbers = {1000, 8500, 1360, 250, 755, 2682, 13500};
     private boolean aPrev = false;
     private boolean xPrev = false;
     private boolean dUpPrev = false;
@@ -367,14 +367,7 @@ private double[] numbers = {1300, 9000, 1360, 250, 755, 2682, 13500};
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
                 backRightDrive.setPower(0);
-                frontLeftDrive.setPower(0.5*scale);
-
-                frontRightDrive.setPower(-0.5*scale);
-
-                backLeftDrive.setPower(0.5*scale);
-
-                backRightDrive.setPower(-0.5*scale);
-                sleep((long)(numbers[3]));
+                turn(135, angle, ang);
                 frontLeftDrive.setPower(0);
                 frontRightDrive.setPower(0);
                 backLeftDrive.setPower(0);
@@ -394,7 +387,7 @@ private double[] numbers = {1300, 9000, 1360, 250, 755, 2682, 13500};
         backLeftDrive.setPower(0.6*scale);
 
         backRightDrive.setPower(-0.6*scale);
-        sleep(100);
+        sleep(150);
         frontLeftDrive.setPower(-0.5*scale);
 
         frontRightDrive.setPower(0.5*scale);
@@ -466,7 +459,7 @@ private double[] numbers = {1300, 9000, 1360, 250, 755, 2682, 13500};
             gravity = imu.getGravity();
             angle = formatAngle(angles.angleUnit, angles.firstAngle);
             ang = Double.parseDouble(angle);
-            turned = (ang >= vuAng - 0.5) && (ang <= vuAng + 0.5);
+            turned = (ang >= vuAng - 0.3)&&(ang<=vuAng+5);
             telemetry.addData("Angle", ang);
             telemetry.addData("TurnTo", objTurn);
 
@@ -511,7 +504,7 @@ private double[] numbers = {1300, 9000, 1360, 250, 755, 2682, 13500};
             gravity = imu.getGravity();
             angle = formatAngle(angles.angleUnit, angles.firstAngle);
             ang = Double.parseDouble(angle);
-            turned = (ang >= vuAng - 0.5) && (ang <= vuAng + 0.5);
+            turned = (ang >= vuAng - 1) && (ang <= vuAng + 0.5);
             telemetry.addData("Angle", ang);
             telemetry.addData("TurnTo", objTurn);
 

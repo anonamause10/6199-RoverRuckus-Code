@@ -114,7 +114,7 @@ public class AutonomousRoverRuckusG extends LinearOpMode
     private int pos = 1; /** 0 - LEFT, 1 - MIDDLE, 2 - RIGHT
  */
 
-private double[] numbers = {1300, 9000, 1360, 250, 2000, 2682, 13500};
+private double[] numbers = {1300, 9000, 900, 250, 1300, 2682, 13500};
     private boolean aPrev = false;
     private boolean xPrev = false;
     private boolean dUpPrev = false;
@@ -300,7 +300,7 @@ private double[] numbers = {1300, 9000, 1360, 250, 2000, 2682, 13500};
         backLeftDrive.setPower(0.3 * scale);
 
         backRightDrive.setPower(0.3 * scale);
-        sleep((long) (800));
+        sleep((long) (770));
         frontLeftDrive.setPower(0);
 
         frontRightDrive.setPower(0);
@@ -314,7 +314,7 @@ private double[] numbers = {1300, 9000, 1360, 250, 2000, 2682, 13500};
         if (pos == 0) {
             turn(45, angle, ang);
         } else if (pos == 2) {
-            negTurn(-55, angle, ang);
+            negTurn(-50, angle, ang);
         }
 
         frontLeftDrive.setPower(0.3 * scale);
@@ -379,7 +379,7 @@ private double[] numbers = {1300, 9000, 1360, 250, 2000, 2682, 13500};
         backLeftDrive.setPower(0.6*scale);
 
         backRightDrive.setPower(-0.6*scale);
-        sleep(600);
+        sleep(1500);
         frontLeftDrive.setPower(0.6*scale);
 
         frontRightDrive.setPower(-0.6*scale);
@@ -388,7 +388,7 @@ private double[] numbers = {1300, 9000, 1360, 250, 2000, 2682, 13500};
 
         backRightDrive.setPower(0.6*scale);
         sleep(100);
-        frontLeftDrive.setPower(-0.5*scale);
+        frontLeftDrive.setPower(-0.45*scale);
 
         frontRightDrive.setPower(0.5*scale);
 
@@ -459,7 +459,7 @@ private double[] numbers = {1300, 9000, 1360, 250, 2000, 2682, 13500};
             gravity = imu.getGravity();
             angle = formatAngle(angles.angleUnit, angles.firstAngle);
             ang = Double.parseDouble(angle);
-            turned = (ang >= vuAng - 0.5) && (ang <= vuAng + 0.5);
+            turned = (ang >= vuAng - 0.3)&&(ang<=vuAng+5);
             telemetry.addData("Angle", ang);
             telemetry.addData("TurnTo", objTurn);
 
